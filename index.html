@@ -1,428 +1,1305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 VFX Warrior Path — 90 Day Tracker</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🔥 VFX WARRIOR PATH — Zero to Donghua God</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0a0a12;
-    --panel:#12121f;
-    --panel2:#1a1a2e;
-    --gold:#f5c542;
-    --qi:#42e8f5;
-    --fire:#ff5e3a;
-    --purple:#a55eff;
-    --green:#4ade80;
-    --text:#e8e8f0;
-    --dim:#8a8aa0;
-    --border:#2a2a45;
+  :root {
+    --gold: #f5c518;
+    --gold2: #ffd700;
+    --jade: #00ffb3;
+    --jade2: #00e5a0;
+    --crimson: #ff3c5c;
+    --crimson2: #ff6b35;
+    --purple: #a855f7;
+    --purple2: #c084fc;
+    --blue: #38bdf8;
+    --blue2: #7dd3fc;
+    --green: #4ade80;
+    --bg-deep: #030712;
+    --bg-card: #0a0f1e;
+    --bg-card2: #0d1526;
+    --border-subtle: rgba(255,255,255,0.06);
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #475569;
+    --glow-gold: 0 0 20px rgba(245,197,24,0.4), 0 0 60px rgba(245,197,24,0.15);
+    --glow-jade: 0 0 20px rgba(0,255,179,0.4), 0 0 60px rgba(0,255,179,0.15);
+    --glow-crimson: 0 0 20px rgba(255,60,92,0.4), 0 0 60px rgba(255,60,92,0.15);
+    --glow-purple: 0 0 20px rgba(168,85,247,0.4), 0 0 60px rgba(168,85,247,0.15);
+    --glow-blue: 0 0 20px rgba(56,189,248,0.4), 0 0 60px rgba(56,189,248,0.15);
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Segoe UI',system-ui,sans-serif;
-    line-height:1.6;
-    background-image:radial-gradient(ellipse at 20% 0%, rgba(165,94,255,.08) 0%, transparent 50%),
-                     radial-gradient(ellipse at 80% 100%, rgba(66,232,245,.06) 0%, transparent 50%);
-    min-height:100vh;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(168,85,247,.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(66,232,245,.06) 0%, transparent 50%);
+    min-height: 100vh;
   }
-  .container{max-width:1000px;margin:0 auto;padding:20px}
+  #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  .page-wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 20px 80px; }
 
-  /* ===== HEADER ===== */
-  header{text-align:center;padding:40px 20px 20px}
-  header h1{
-    font-size:clamp(1.8rem,5vw,3rem);
-    background:linear-gradient(90deg,var(--fire),var(--gold),var(--qi));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    letter-spacing:1px;
+  /* ─── STICKY HUD ─── */
+  .hud {
+    position: sticky; top: 0; z-index: 90;
+    background: rgba(3,7,18,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 12px 20px;
   }
-  header p{color:var(--dim);margin-top:8px;font-size:1.05rem}
-  .tagline{color:var(--gold);font-style:italic;margin-top:4px}
-
-  /* ===== PROGRESS HUD ===== */
-  .hud{
-    position:sticky;top:0;z-index:100;
-    background:rgba(10,10,18,.92);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-    padding:12px 20px;margin-bottom:24px;
+  .hud-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
   }
-  .hud-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .hud-stat{font-size:.9rem;color:var(--dim)}
-  .hud-stat b{color:var(--gold);font-size:1.1rem}
-  .bar-wrap{flex:1;min-width:200px;height:14px;background:var(--panel2);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
-  .bar{height:100%;width:0%;border-radius:99px;
-    background:linear-gradient(90deg,var(--fire),var(--gold),var(--qi));
-    transition:width .5s ease;box-shadow:0 0 12px rgba(245,197,66,.5)}
-  .realm{font-size:.85rem;padding:4px 12px;border-radius:99px;border:1px solid var(--gold);color:var(--gold);white-space:nowrap}
-  .btn-reset{background:none;border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;cursor:pointer;font-size:.75rem}
-  .btn-reset:hover{border-color:var(--fire);color:var(--fire)}
-
-  /* ===== SECTIONS ===== */
-  section{margin-bottom:28px}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
-  h2{font-size:1.4rem;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-
-  /* ===== PHASES ===== */
-  .phase{border:1px solid var(--border);border-radius:16px;margin-bottom:18px;overflow:hidden;background:var(--panel)}
-  .phase-head{
-    padding:18px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
-    background:var(--panel2);user-select:none;transition:background .2s;
+  .hud-stat { font-family: 'Share Tech Mono', monospace; font-size: .85rem; color: var(--text-muted); white-space: nowrap; }
+  .hud-stat b { color: var(--gold); font-size: 1.05rem; }
+  .hud-bar-wrap { flex: 1; min-width: 180px; height: 12px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; border: 1px solid var(--border-subtle); }
+  .hud-bar { height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--crimson2), var(--gold), var(--jade)); transition: width .5s ease; box-shadow: 0 0 12px rgba(245,197,66,.5); }
+  .realm-badge {
+    font-family: 'Orbitron', monospace;
+    font-size: .78rem; letter-spacing: 1px;
+    padding: 5px 14px; border-radius: 99px;
+    border: 1px solid var(--gold); color: var(--gold);
+    white-space: nowrap;
+    background: rgba(245,197,24,0.08);
+    transition: all .4s ease;
   }
-  .phase-head:hover{background:#20203a}
-  .phase-head h2{margin:0;font-size:1.2rem}
-  .phase-head .sub{color:var(--dim);font-size:.85rem;font-weight:normal;margin-top:2px}
-  .phase-prog{font-size:.85rem;color:var(--dim);white-space:nowrap}
-  .chev{transition:transform .3s;color:var(--dim)}
-  .phase.open .chev{transform:rotate(90deg)}
-  .phase-body{display:none;padding:18px 22px}
-  .phase.open .phase-body{display:block}
-  .p1 .phase-head{border-left:4px solid var(--qi)}
-  .p2 .phase-head{border-left:4px solid var(--fire)}
-  .p3 .phase-head{border-left:4px solid var(--purple)}
-  .p4 .phase-head{border-left:4px solid var(--gold)}
-
-  /* ===== DAY CARDS ===== */
-  .day{
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--panel2);border:1px solid var(--border);border-radius:12px;
-    padding:14px 16px;margin-bottom:10px;transition:all .2s;
+  .btn-reset {
+    background: none; border: 1px solid rgba(255,60,92,0.3); color: var(--crimson);
+    padding: 6px 14px; border-radius: 8px; cursor: pointer;
+    font-family: 'Share Tech Mono', monospace; font-size: .72rem; letter-spacing: 1px;
+    transition: all .2s;
   }
-  .day:hover{border-color:var(--qi)}
-  .day.done{opacity:.55;border-color:var(--green)}
-  .day.done .day-title{text-decoration:line-through}
-  .day input[type=checkbox]{
-    width:22px;height:22px;margin-top:3px;accent-color:var(--green);cursor:pointer;flex-shrink:0;
+  .btn-reset:hover { background: rgba(255,60,92,0.1); border-color: var(--crimson); }
+
+  /* ─── HERO ─── */
+  .hero { text-align: center; padding: 60px 20px 40px; position: relative; }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(245,197,24,0.15), rgba(255,107,53,0.15));
+    border: 1px solid rgba(245,197,24,0.3);
+    color: var(--gold);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 3px;
+    padding: 6px 20px; border-radius: 50px;
+    margin-bottom: 28px; text-transform: uppercase;
+    animation: pulseGlow 3s ease-in-out infinite;
   }
-  .day-content{flex:1}
-  .day-title{font-weight:600;color:var(--text)}
-  .day-title .dnum{color:var(--gold);margin-right:6px}
-  .day-learn{font-size:.88rem;color:var(--dim);margin-top:3px}
-  .day-watch{font-size:.85rem;color:var(--qi);margin-top:3px}
-  .day-output{
-    font-size:.88rem;margin-top:6px;padding:6px 10px;border-radius:8px;
-    background:rgba(74,222,128,.08);border-left:3px solid var(--green);color:#c9f5d9;
+  @keyframes pulseGlow {
+    0%,100% { box-shadow: 0 0 10px rgba(245,197,24,0.2); }
+    50% { box-shadow: 0 0 30px rgba(245,197,24,0.5), 0 0 60px rgba(245,197,24,0.2); }
   }
-  .day.boss{border:1px solid var(--gold);box-shadow:0 0 16px rgba(245,197,66,.12)}
-  .day.boss .day-title{color:var(--gold)}
-
-  /* ===== TABLES ===== */
-  table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:10px}
-  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
-  th{color:var(--gold);font-weight:600}
-  td{color:var(--dim)}
-  td b, td a{color:var(--text)}
-  a{color:var(--qi);text-decoration:none}
-  a:hover{text-decoration:underline}
-
-  /* ===== ROUTINE ===== */
-  .routine{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
-  .routine-block{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:16px}
-  .routine-block h3{font-size:1rem;color:var(--gold);margin-bottom:8px}
-  .routine-block ul{list-style:none;font-size:.87rem;color:var(--dim)}
-  .routine-block li{margin-bottom:6px;padding-left:16px;position:relative}
-  .routine-block li:before{content:"→";position:absolute;left:0;color:var(--qi)}
-
-  /* ===== MONEY ===== */
-  .money-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
-  .money-card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:16px;border-top:3px solid var(--green)}
-  .money-card h3{color:var(--green);font-size:1rem;margin-bottom:6px}
-  .money-card p{font-size:.85rem;color:var(--dim)}
-  .money-card .days{font-size:.75rem;color:var(--gold);margin-top:8px}
-
-  /* ===== MILESTONES ===== */
-  .milestone-row.done-m td{color:var(--green)}
-
-  .rule{
-    background:linear-gradient(135deg,rgba(255,94,58,.1),rgba(245,197,66,.08));
-    border:1px solid rgba(245,197,66,.35);border-radius:12px;padding:16px 20px;margin-top:12px;
-    font-size:.95rem;
+  .hero h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900;
+    background: linear-gradient(135deg, #f5c518 0%, #ff6b35 40%, #ff3c5c 70%, #a855f7 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1.15; margin-bottom: 12px;
+    filter: drop-shadow(0 0 30px rgba(245,197,24,0.3));
   }
-  footer{text-align:center;color:var(--dim);padding:30px;font-size:.85rem}
-  .badge{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
-  .b-free{background:rgba(74,222,128,.15);color:var(--green);border:1px solid var(--green)}
-  .b-paid{background:rgba(245,197,66,.12);color:var(--gold);border:1px solid var(--gold)}
+  .hero-sub {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.65rem, 2vw, 0.85rem); letter-spacing: 4px;
+    color: var(--text-muted); text-transform: uppercase; margin-bottom: 36px;
+  }
+  .hero-desc { max-width: 680px; margin: 0 auto 44px; font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; }
+  .hero-desc strong { color: var(--jade); }
+
+  .stats-bar { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 50px; padding: 10px 22px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.8rem;
+    transition: all 0.3s ease;
+  }
+  .stat-pill:hover { transform: translateY(-2px); border-color: rgba(245,197,24,0.3); }
+  .stat-pill .icon { font-size: 1.1rem; }
+  .stat-pill .label { color: var(--text-muted); }
+  .stat-pill .value { color: var(--gold); font-weight: 700; }
+
+  /* ─── TRACKER ─── */
+  .tracker-box {
+    background: var(--bg-card); border: 1px solid rgba(245,197,24,0.2);
+    border-radius: 16px; padding: 24px 28px; margin: 36px 0;
+    position: relative; overflow: hidden;
+  }
+  .tracker-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .tracker-title {
+    font-family: 'Orbitron', monospace; font-size: 0.75rem; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+  }
+  .tracker-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+    gap: 5px; margin-bottom: 16px;
+  }
+  .day-dot {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle);
+    cursor: pointer; transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace; position: relative;
+  }
+  .day-dot:hover { border-color: var(--gold); color: var(--gold); transform: scale(1.1); }
+  .day-dot.done {
+    background: linear-gradient(135deg, rgba(245,197,24,0.3), rgba(255,107,53,0.3));
+    border-color: var(--gold); color: var(--gold);
+    box-shadow: 0 0 8px rgba(245,197,24,0.3);
+  }
+  .day-dot.done::after { content: '✓'; font-size: 0.8rem; }
+  .tracker-meta { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .streak-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.25);
+    border-radius: 10px; padding: 8px 16px;
+    font-family: 'Orbitron', monospace; font-size: 0.75rem;
+  }
+  .streak-num { color: var(--gold); font-size: 1.2rem; font-weight: 900; }
+
+  /* ─── NAV PILLS ─── */
+  .phase-nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 32px 0 48px; }
+  .phase-nav a {
+    text-decoration: none; padding: 9px 20px; border-radius: 50px;
+    font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 2px;
+    border: 1px solid var(--border-subtle); color: var(--text-muted);
+    background: var(--bg-card); transition: all 0.25s ease; text-transform: uppercase;
+  }
+  .phase-nav a:hover, .phase-nav a.active { color: #fff; transform: translateY(-2px); }
+  .phase-nav a.p1:hover, .phase-nav a.p1.active { border-color: var(--crimson); color: var(--crimson); box-shadow: var(--glow-crimson); }
+  .phase-nav a.p2:hover, .phase-nav a.p2.active { border-color: var(--purple); color: var(--purple); box-shadow: var(--glow-purple); }
+  .phase-nav a.p3:hover, .phase-nav a.p3.active { border-color: var(--blue); color: var(--blue); box-shadow: var(--glow-blue); }
+  .phase-nav a.p4:hover, .phase-nav a.p4.active { border-color: var(--gold); color: var(--gold); box-shadow: var(--glow-gold); }
+  .phase-nav a.sensei:hover, .phase-nav a.sensei.active { border-color: var(--jade); color: var(--jade); box-shadow: var(--glow-jade); }
+  .phase-nav a.tools:hover, .phase-nav a.tools.active { border-color: #60a5fa; color: #60a5fa; }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header { display: flex; align-items: center; gap: 16px; margin: 56px 0 24px; position: relative; }
+  .section-header::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
+  }
+  .phase-tag {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 3px;
+    padding: 4px 12px; border-radius: 4px; text-transform: uppercase; white-space: nowrap;
+  }
+  .phase-tag.p1 { background: rgba(255,60,92,0.15); color: var(--crimson); border: 1px solid rgba(255,60,92,0.25); }
+  .phase-tag.p2 { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
+  .phase-tag.p3 { background: rgba(56,189,248,0.15); color: var(--blue); border: 1px solid rgba(56,189,248,0.25); }
+  .phase-tag.p4 { background: rgba(245,197,24,0.15); color: var(--gold); border: 1px solid rgba(245,197,24,0.25); }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 700; white-space: nowrap;
+  }
+  .section-title.p1 { color: var(--crimson); text-shadow: var(--glow-crimson); }
+  .section-title.p2 { color: var(--purple); text-shadow: var(--glow-purple); }
+  .section-title.p3 { color: var(--blue); text-shadow: var(--glow-blue); }
+  .section-title.p4 { color: var(--gold); text-shadow: var(--glow-gold); }
+  .section-title.jade { color: var(--jade); text-shadow: var(--glow-jade); }
+
+  .phase-meta {
+    font-size: 0.9rem; color: var(--text-muted);
+    margin-bottom: 20px; padding: 14px 20px;
+    border-left: 3px solid; background: var(--bg-card); border-radius: 0 8px 8px 0;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .phase-meta.p1 { border-color: var(--crimson); }
+  .phase-meta.p2 { border-color: var(--purple); }
+  .phase-meta.p3 { border-color: var(--blue); }
+  .phase-meta.p4 { border-color: var(--gold); }
+  .phase-counter {
+    font-family: 'Orbitron', monospace; font-size: .8rem; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 99px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle);
+    color: var(--jade); white-space: nowrap;
+  }
+
+  /* ─── DAY CARDS ─── */
+  .days-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px; margin-bottom: 16px;
+  }
+  .day-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 14px; overflow: hidden; transition: all 0.3s ease;
+    position: relative;
+  }
+  .day-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.12); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .day-card.completed { opacity: .68; }
+  .day-card.completed .card-title { text-decoration: line-through; }
+  .day-card.boss { border: 1px solid rgba(245,197,24,0.5); box-shadow: 0 0 20px rgba(245,197,24,0.08); }
+  .day-card.boss::before {
+    content: '🏆 BOSS'; position: absolute; top: 10px; right: 10px;
+    font-family: 'Orbitron', monospace; font-size: .55rem; letter-spacing: 2px;
+    padding: 3px 8px; border-radius: 4px;
+    background: linear-gradient(135deg, rgba(245,197,24,0.2), rgba(255,107,53,0.2));
+    color: var(--gold); border: 1px solid rgba(245,197,24,0.3);
+  }
+  .card-top { padding: 14px 18px 12px; display: flex; align-items: flex-start; gap: 12px; }
+  .day-number {
+    font-family: 'Orbitron', monospace; font-size: 0.62rem; letter-spacing: 2px;
+    padding: 4px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .day-number.p1 { background: rgba(255,60,92,0.15); color: var(--crimson); border: 1px solid rgba(255,60,92,0.2); }
+  .day-number.p2 { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.2); }
+  .day-number.p3 { background: rgba(56,189,248,0.15); color: var(--blue); border: 1px solid rgba(56,189,248,0.2); }
+  .day-number.p4 { background: rgba(245,197,24,0.15); color: var(--gold); border: 1px solid rgba(245,197,24,0.2); }
+  .card-title-wrap { flex: 1; min-width: 0; }
+  .card-title {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem;
+    color: #fff; line-height: 1.3; margin-bottom: 2px;
+  }
+  .complete-toggle {
+    background: none; border: 1px solid var(--border-subtle); border-radius: 8px;
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-dim); font-size: 1rem;
+    transition: all 0.2s ease; flex-shrink: 0;
+  }
+  .complete-toggle:hover { border-color: var(--jade); color: var(--jade); }
+  .day-card.completed .complete-toggle { background: rgba(74,222,128,0.15); border-color: var(--green); color: var(--green); }
+
+  .card-body { padding: 0 18px 14px; }
+  .card-body-inner { padding-top: 10px; border-top: 1px solid var(--border-subtle); display: none; }
+  .day-card.open .card-body-inner { display: block; }
+
+  .detail-toggle {
+    width: 100%; background: none; border: none; color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 2px;
+    cursor: pointer; padding: 8px 0; display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s; text-transform: uppercase;
+  }
+  .detail-toggle:hover { color: var(--text-muted); }
+  .day-card.open .detail-toggle .arrow { transform: rotate(180deg); }
+  .arrow { transition: transform 0.2s; }
+
+  .block { margin-top: 12px; }
+  .block-label {
+    font-family: 'Orbitron', monospace; font-size: 0.58rem; letter-spacing: 3px;
+    color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .concept-line { font-size: .85rem; color: var(--text-muted); }
+  .watch-line { font-size: .85rem; color: var(--blue2); }
+  .output-badge {
+    display: block; background: linear-gradient(135deg, rgba(74,222,128,0.1), rgba(0,255,179,0.08));
+    border: 1px solid rgba(74,222,128,0.25); border-radius: 8px;
+    padding: 8px 12px; font-size: 0.87rem; color: #c9f5d9;
+    border-left: 3px solid var(--green);
+  }
+
+  /* ─── CHANNELS ─── */
+  .channels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .channel-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 14px; padding: 18px 20px; transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .channel-card:hover { transform: translateY(-3px); }
+  .channel-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.3s; }
+  .channel-card:hover::after { opacity: 1; }
+  .channel-card.jade::after { background: var(--jade); }
+  .channel-card.gold::after { background: var(--gold); }
+  .channel-card.purple::after { background: var(--purple); }
+  .channel-card.crimson::after { background: var(--crimson); }
+  .channel-card.blue::after { background: var(--blue); }
+  .channel-icon { font-size: 2rem; margin-bottom: 10px; }
+  .channel-name { font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 4px; }
+  .channel-handle { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; margin-bottom: 10px; }
+  .channel-handle.jade { color: var(--jade); }
+  .channel-handle.gold { color: var(--gold); }
+  .channel-handle.purple { color: var(--purple2); }
+  .channel-handle.crimson { color: var(--crimson2); }
+  .channel-handle.blue { color: var(--blue2); }
+  .channel-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+  .channel-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .channel-tag {
+    font-size: 0.7rem; padding: 2px 8px; border-radius: 4px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); color: var(--text-muted);
+  }
+  .channel-link {
+    display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; margin-top: 10px;
+    padding: 5px 12px; border-radius: 6px;
+    border: 1px solid var(--border-subtle); color: var(--text-muted); transition: all 0.2s;
+  }
+  .channel-link:hover { border-color: var(--jade); color: var(--jade); }
+
+  /* ─── COURSES ─── */
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .course-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 14px; padding: 20px;
+    transition: all 0.3s ease; display: flex; flex-direction: column;
+  }
+  .course-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.1); }
+  .course-price {
+    display: inline-block; font-family: 'Orbitron', monospace;
+    font-size: 0.65rem; letter-spacing: 2px; padding: 3px 10px;
+    border-radius: 50px; margin-bottom: 12px; text-transform: uppercase; align-self: flex-start;
+  }
+  .course-price.free { background: rgba(0,255,179,0.12); color: var(--jade); border: 1px solid rgba(0,255,179,0.25); }
+  .course-price.paid { background: rgba(245,197,24,0.12); color: var(--gold); border: 1px solid rgba(245,197,24,0.25); }
+  .course-price.premium { background: rgba(168,85,247,0.12); color: var(--purple2); border: 1px solid rgba(168,85,247,0.25); }
+  .course-name { font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 6px; }
+  .course-author { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 10px; font-family: 'Share Tech Mono', monospace; }
+  .course-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
+
+  /* ─── TOOLS ─── */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .tool-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 12px; padding: 16px; transition: all 0.3s; text-align: center;
+  }
+  .tool-card:hover { transform: translateY(-3px); border-color: rgba(56,189,248,0.3); box-shadow: var(--glow-blue); }
+  .tool-icon { font-size: 2rem; margin-bottom: 8px; }
+  .tool-name { font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .tool-type { font-size: 0.7rem; color: var(--jade); font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; margin-bottom: 6px; }
+  .tool-desc { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ─── ROUTINE ─── */
+  .routine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .routine-block {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 14px; padding: 18px; position: relative; overflow: hidden; transition: all 0.3s;
+  }
+  .routine-block:hover { transform: translateY(-2px); }
+  .routine-time { font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+  .routine-block.morning .routine-time { color: var(--gold); }
+  .routine-block.afternoon .routine-time { color: var(--crimson2); }
+  .routine-block.evening .routine-time { color: var(--purple2); }
+  .routine-block.rule .routine-time { color: var(--jade); }
+  .routine-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .routine-title { font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .routine-tasks { list-style: none; }
+  .routine-tasks li { font-size: 0.82rem; color: var(--text-muted); padding: 3px 0; display: flex; gap: 6px; align-items: flex-start; }
+  .routine-tasks li::before { content: '•'; flex-shrink: 0; }
+  .routine-block.morning .routine-tasks li::before { color: var(--gold); }
+  .routine-block.afternoon .routine-tasks li::before { color: var(--crimson2); }
+  .routine-block.evening .routine-tasks li::before { color: var(--purple2); }
+  .routine-block.rule .routine-tasks li::before { color: var(--jade); }
+
+  /* ─── MONEY ─── */
+  .money-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .money-card {
+    background: var(--bg-card); border: 1px solid rgba(245,197,24,0.15);
+    border-radius: 16px; padding: 22px; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .money-card:hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(245,197,24,0.1); border-color: rgba(245,197,24,0.3); }
+  .money-stream { font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+  .money-icon { font-size: 2rem; margin-bottom: 10px; }
+  .money-title { font-weight: 700; font-size: 1.05rem; color: #fff; margin-bottom: 8px; }
+  .money-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+  .money-potential {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.2);
+    border-radius: 8px; padding: 5px 12px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--gold2);
+  }
+
+  /* ─── MILESTONE TABLE ─── */
+  .milestone-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; background: var(--bg-card); border-radius: 12px; overflow: hidden; }
+  .milestone-table th {
+    font-family: 'Orbitron', monospace; font-size: 0.65rem; letter-spacing: 3px;
+    color: var(--text-dim); text-transform: uppercase;
+    padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-subtle);
+  }
+  .milestone-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.88rem; color: var(--text-muted); }
+  .milestone-table tr:last-child td { border-bottom: none; }
+  .milestone-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .milestone-table tr.reached td { background: rgba(74,222,128,0.05); }
+  .milestone-table tr.reached .ms-realm { color: var(--green); }
+  .ms-day-cell { font-family: 'Orbitron', monospace; font-size: 0.75rem; font-weight: 700; color: var(--gold); white-space: nowrap; }
+  .ms-realm { font-family: 'Orbitron', monospace; font-size: .8rem; color: var(--jade); white-space: nowrap; }
+  .ms-feel { font-style: italic; color: var(--jade); font-size: 0.82rem; }
+
+  /* ─── STACK ─── */
+  .stack-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; transition: all 0.3s;
+  }
+  .stack-row:hover { border-color: rgba(0,255,179,0.2); transform: translateX(4px); }
+  .stack-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .stack-name { font-weight: 700; color: #fff; font-size: 0.95rem; }
+  .stack-when { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; }
+  .stack-label { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: var(--jade); letter-spacing: 1px; }
+
+  /* ─── PACKS ─── */
+  .pack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .pack-card {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+    border: 1px solid rgba(245,197,24,0.15); border-radius: 14px;
+    padding: 18px; text-align: center; transition: all 0.3s;
+  }
+  .pack-card:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(245,197,24,0.1); }
+  .pack-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .pack-name { font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .pack-note { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ─── MILESTONE RANGE ─── */
+  .milestone-range {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+    border: 1px solid var(--border-subtle); border-radius: 16px;
+    padding: 20px 24px; margin-bottom: 14px; position: relative; overflow: hidden; transition: all 0.3s;
+  }
+  .milestone-range:hover { transform: translateX(4px); }
+  .milestone-range::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+  .milestone-range.p1::before { background: var(--crimson); box-shadow: var(--glow-crimson); }
+  .milestone-range.p2::before { background: var(--purple); box-shadow: var(--glow-purple); }
+  .milestone-range.p3::before { background: var(--blue); box-shadow: var(--glow-blue); }
+  .milestone-range.p4::before { background: var(--gold); box-shadow: var(--glow-gold); }
+  .ms-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .ms-days { font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 2px; padding: 3px 12px; border-radius: 50px; font-weight: 700; }
+  .ms-days.p1 { background: rgba(255,60,92,0.15); color: var(--crimson); }
+  .ms-days.p2 { background: rgba(168,85,247,0.15); color: var(--purple); }
+  .ms-days.p3 { background: rgba(56,189,248,0.15); color: var(--blue); }
+  .ms-days.p4 { background: rgba(245,197,24,0.15); color: var(--gold); }
+  .ms-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.05rem; color: #fff; }
+  .ms-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .ms-desc strong { color: var(--text-main); }
+  .ms-outputs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .ms-output-tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 6px; border: 1px solid; }
+  .ms-output-tag.p1 { background: rgba(255,60,92,0.08); color: var(--crimson); border-color: rgba(255,60,92,0.2); }
+  .ms-output-tag.p2 { background: rgba(168,85,247,0.08); color: var(--purple2); border-color: rgba(168,85,247,0.2); }
+  .ms-output-tag.p3 { background: rgba(56,189,248,0.08); color: var(--blue2); border-color: rgba(56,189,248,0.2); }
+  .ms-output-tag.p4 { background: rgba(245,197,24,0.08); color: var(--gold); border-color: rgba(245,197,24,0.2); }
+
+  /* ─── CALLOUTS ─── */
+  .callout { border-radius: 14px; padding: 20px 24px; margin: 20px 0; position: relative; overflow: hidden; border: 1px solid; }
+  .callout::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .callout.jade { background: rgba(0,255,179,0.05); border-color: rgba(0,255,179,0.2); }
+  .callout.jade::before { background: linear-gradient(90deg, transparent, var(--jade), transparent); }
+  .callout.gold { background: rgba(245,197,24,0.05); border-color: rgba(245,197,24,0.2); }
+  .callout.gold::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .callout.crimson { background: rgba(255,60,92,0.05); border-color: rgba(255,60,92,0.2); }
+  .callout.crimson::before { background: linear-gradient(90deg, transparent, var(--crimson), transparent); }
+  .callout.purple { background: rgba(168,85,247,0.05); border-color: rgba(168,85,247,0.2); }
+  .callout.purple::before { background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+  .callout-title { font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+  .callout.jade .callout-title { color: var(--jade); }
+  .callout.gold .callout-title { color: var(--gold); }
+  .callout.crimson .callout-title { color: var(--crimson); }
+  .callout.purple .callout-title { color: var(--purple2); }
+  .callout p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
+  .callout strong { color: var(--text-main); }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-subtle), transparent); margin: 48px 0; }
+
+  /* ─── FOOTER ─── */
+  .footer { text-align: center; padding: 48px 20px; border-top: 1px solid var(--border-subtle); margin-top: 60px; }
+  .footer-title {
+    font-family: 'Cinzel Decorative', serif; font-size: clamp(1.2rem, 3vw, 2rem);
+    background: linear-gradient(135deg, var(--gold), var(--crimson2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 16px;
+  }
+  .footer-quote { font-size: 1rem; color: var(--text-muted); font-style: italic; max-width: 500px; margin: 0 auto 24px; }
+  .footer-meta { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 2px; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: rgba(245,197,24,0.3); border-radius: 50px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245,197,24,0.5); }
+
+  @media (max-width: 600px) {
+    .days-grid, .channels-grid, .routine-grid, .money-grid { grid-template-columns: 1fr; }
+    .tools-grid, .pack-grid { grid-template-columns: repeat(2, 1fr); }
+    .tracker-grid { grid-template-columns: repeat(auto-fill, minmax(24px, 1fr)); }
+    .day-dot { width: 24px; height: 24px; }
+  }
+
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .float { animation: float 4s ease-in-out infinite; }
+  .glow-text-gold { color: var(--gold); text-shadow: 0 0 20px rgba(245,197,24,0.5); }
+
+  #scroll-top {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--bg-card); border: 1px solid rgba(245,197,24,0.3);
+    color: var(--gold); width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1.1rem; z-index: 100;
+    opacity: 0; transform: translateY(10px); transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  #scroll-top.visible { opacity: 1; transform: translateY(0); }
+  #scroll-top:hover { background: rgba(245,197,24,0.1); box-shadow: var(--glow-gold); }
 </style>
 </head>
 <body>
+<canvas id="canvas-bg"></canvas>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
-<header>
-  <h1>🔥 THE VFX WARRIOR PATH 🔥</h1>
-  <p>Zero → Donghua-Level VFX God → Making Money</p>
-  <p class="tagline">"Every day ends with an output. No exceptions."</p>
-</header>
-
-<!-- ===== STICKY PROGRESS HUD ===== -->
+<!-- ═══════════════ STICKY HUD ═══════════════ -->
 <div class="hud">
   <div class="hud-inner">
-    <div class="hud-stat">Days done: <b id="doneCount">0</b>/90</div>
-    <div class="bar-wrap"><div class="bar" id="progressBar"></div></div>
-    <div class="realm" id="realmLabel">🧘 Mortal Realm</div>
-    <button class="btn-reset" onclick="resetAll()">Reset</button>
+    <div class="hud-stat">Days: <b id="doneCount">0</b>/90</div>
+    <div class="hud-bar-wrap"><div class="hud-bar" id="hudBar"></div></div>
+    <div class="realm-badge" id="realmLabel">🧘 Mortal Realm</div>
+    <div class="hud-stat">🔥 Streak: <b id="streakNum">0</b></div>
+    <button class="btn-reset" onclick="resetAll()">RESET</button>
   </div>
 </div>
 
-<div class="container">
+<div class="page-wrap">
 
-<!-- ===== WHY THIS WORKS ===== -->
-<section class="card">
-  <h2>🎯 Why This Path Works For YOU</h2>
-  <p style="color:var(--dim)">Modern 3D donghua is built on <b style="color:var(--text)">Unreal Engine-class real-time rendering</b> — you're already in the right engine. Your Blueprint knowledge is your <b style="color:var(--gold)">unfair advantage</b>: Niagara lets a technical artist build complex effects without a programmer, and YOU can wire everything into gameplay yourself.</p>
-  <div class="rule">⚔️ <b>The One Rule:</b> For every tutorial you follow, build one <b>original xianxia variant</b>. Tutorial beam → your tribulation lightning. Tutorial aura → your golden core aura. This is how you escape tutorial hell.</div>
-</section>
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero">
+    <div class="hero-badge">⚔️ 90-Day Cultivation Arc · VFX Edition</div>
+    <h1>The VFX Warrior Path</h1>
+    <p class="hero-sub">Zero → Donghua-Level VFX God → Making Money</p>
+    <p class="hero-desc">
+      You're an indie dev with <strong>basic UE5 Blueprints</strong>. That's your secret weapon.<br/>
+      This is a <strong>full-day, project-based, donghua-flavored</strong> path that turns you into a professional VFX artist in 90 days — with something real to show every single evening.
+    </p>
+    <div class="stats-bar">
+      <div class="stat-pill"><span class="icon">📅</span><span class="label">Duration</span><span class="value">90 Days</span></div>
+      <div class="stat-pill"><span class="icon">🎯</span><span class="label">Daily Output</span><span class="value">1 VFX Effect</span></div>
+      <div class="stat-pill"><span class="icon">🛠</span><span class="label">Engine</span><span class="value">UE5 Niagara</span></div>
+      <div class="stat-pill"><span class="icon">🎨</span><span class="label">Style</span><span class="value">Xianxia Donghua</span></div>
+      <div class="stat-pill"><span class="icon">💰</span><span class="label">Goal</span><span class="value">Pro + Income</span></div>
+    </div>
+  </section>
 
-<!-- ===== PHASE 1 ===== -->
-<div class="phase p1 open" id="phase1">
-  <div class="phase-head" onclick="togglePhase(this)">
-    <div><h2>📘 PHASE 1 — Foundation Forge</h2><div class="sub">Days 1–14 · Master Niagara core. Build your first 14 effects.</div></div>
-    <div style="display:flex;gap:14px;align-items:center"><span class="phase-prog" data-prog="1">0/14</span><span class="chev">▶</span></div>
+  <!-- ═══════════════ TRACKER ═══════════════ -->
+  <div class="tracker-box" id="tracker">
+    <div class="tracker-title">⚡ Your 90-Day Quest Log · Click a day to toggle</div>
+    <div class="tracker-grid" id="tracker-grid"></div>
+    <div class="tracker-meta">
+      <div class="streak-badge">🔥 Current Streak: <span class="streak-num" id="streakBadge">0</span> days</div>
+      <div class="streak-badge" style="background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.25);">✅ Total: <span class="streak-num" style="color:var(--green)" id="totalDone">0</span> / 90</div>
+    </div>
   </div>
-  <div class="phase-body" data-days="1"></div>
-</div>
 
-<!-- ===== PHASE 2 ===== -->
-<div class="phase p2" id="phase2">
-  <div class="phase-head" onclick="togglePhase(this)">
-    <div><h2>📗 PHASE 2 — The Donghua Arsenal</h2><div class="sub">Days 15–45 · Recreate iconic xianxia VFX. Build your portfolio reel.</div></div>
-    <div style="display:flex;gap:14px;align-items:center"><span class="phase-prog" data-prog="2">0/31</span><span class="chev">▶</span></div>
+  <!-- ═══════════════ NAV ═══════════════ -->
+  <nav class="phase-nav">
+    <a href="#phase1" class="p1">⚔️ Phase 1 — Foundation</a>
+    <a href="#phase2" class="p2">🔮 Phase 2 — Donghua Arsenal</a>
+    <a href="#phase3" class="p3">⚡ Phase 3 — Advanced</a>
+    <a href="#phase4" class="p4">💰 Phase 4 — Money</a>
+    <a href="#senseis" class="sensei">📺 YT Senseis</a>
+    <a href="#courses" class="tools">🎓 Courses</a>
+    <a href="#tools-section" class="tools">🧰 Tools</a>
+    <a href="#routine" class="sensei">📋 Daily Routine</a>
+    <a href="#milestones" class="tools">🏆 Milestones</a>
+  </nav>
+
+  <!-- ═══════════════ YOUR STACK ═══════════════ -->
+  <div class="section-header">
+    <div class="phase-tag p3">Stack</div>
+    <h2 class="section-title jade">Your Weapon Arsenal</h2>
   </div>
-  <div class="phase-body" data-days="2"></div>
-</div>
+  <div class="stack-row"><div class="stack-icon">🔥</div><div><div class="stack-name">UE5 — Niagara VFX System</div><div class="stack-label">PRIMARY WEAPON · NOW</div><div class="stack-when">Your real-time VFX engine. Runs entirely on node graphs — familiar from Blueprints. Powers everything: particles, fluids, beams, ribbons, meshes.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">🎨</div><div><div class="stack-name">UE5 Material Editor</div><div class="stack-label">PRIMARY WEAPON · NOW</div><div class="stack-when">50% of VFX quality lives here. Glow, dissolve, UV scrolling, Fresnel, panning noise — all built in the material graph.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">🎬</div><div><div class="stack-name">Sequencer + Control Rig</div><div class="stack-label">WEEK 4+ · IN-ENGINE</div><div class="stack-when">Choreograph cinematic shots. Animate props and characters. Build your portfolio reels without leaving Unreal.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">🕺</div><div><div class="stack-name">Mixamo → IK Retargeter</div><div class="stack-label">WEEK 3+ · FREE CHEAT</div><div class="stack-when">Free rigged characters and hundreds of mocap animations. Retarget them to your UE5 mannequin in minutes.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">🫐</div><div><div class="stack-name">Blender</div><div class="stack-label">MONTH 2+ · MESH CREATION</div><div class="stack-when">Create custom VFX meshes: crescent slashes, formation rings, magic seals, energy crystals. Export to UE5.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">✏️</div><div><div class="stack-name">Krita (Free)</div><div class="stack-label">MONTH 2+ · FLIPBOOKS</div><div class="stack-when">Hand-paint donghua-style flipbook sprites. The 2D-feel in 3D VFX is what separates you from generic tutorials.</div></div></div>
+  <div class="stack-row"><div class="stack-icon">🌊</div><div><div class="stack-name">Niagara Fluids + EmberGen</div><div class="stack-label">MONTH 3+ · CINEMATIC</div><div class="stack-when">Volumetric smoke, ink-wash clouds, fire simulations → bake to flipbooks via Niagara Baker or EmberGen.</div></div></div>
 
-<!-- ===== PHASE 3 ===== -->
-<div class="phase p3" id="phase3">
-  <div class="phase-head" onclick="togglePhase(this)">
-    <div><h2>📕 PHASE 3 — Advanced Techniques</h2><div class="sub">Days 46–65 · Fluids, flipbooks, shaders, Blueprint mastery.</div></div>
-    <div style="display:flex;gap:14px;align-items:center"><span class="phase-prog" data-prog="3">0/20</span><span class="chev">▶</span></div>
+  <div class="callout jade">
+    <div class="callout-title">🧠 Why This Stack For Xianxia Donghua?</div>
+    <p>Donghua's signature look = <strong>2D energy + 3D environment + real-time rendering</strong>. Niagara handles particles &amp; ribbons, Materials handle the glow &amp; dissolve magic, Krita handles the ink-brushstroke flipbooks, and UE5 Lumen handles the lighting that makes everything pop. This is exactly the pipeline used in modern stylized games.</p>
   </div>
-  <div class="phase-body" data-days="3"></div>
-</div>
 
-<!-- ===== PHASE 4 ===== -->
-<div class="phase p4" id="phase4">
-  <div class="phase-head" onclick="togglePhase(this)">
-    <div><h2>📙 PHASE 4 — Make Money 💰</h2><div class="sub">Days 66–90 · FAB packs, freelancing, content, your own game.</div></div>
-    <div style="display:flex;gap:14px;align-items:center"><span class="phase-prog" data-prog="4">0/25</span><span class="chev">▶</span></div>
+  <div class="callout crimson">
+    <div class="callout-title">⚠️ The Golden Rule — Escape Tutorial Hell</div>
+    <p>For every 1 tutorial you follow, you must build <strong>1 original xianxia variant</strong>. Tutorial beam → your tribulation lightning. Tutorial aura → your golden core aura. Tutorial portal → your sect formation gate. This is how you actually get good, not just informed.</p>
   </div>
-  <div class="phase-body" data-days="4"></div>
-</div>
 
-<!-- ===== MONEY STREAMS ===== -->
-<section class="card">
-  <h2>💰 Your 4 Revenue Streams</h2>
+  <!-- ═══════════════ PHASE 1 ═══════════════ -->
+  <div class="section-header" id="phase1">
+    <div class="phase-tag p1">Phase 1</div>
+    <h2 class="section-title p1">Foundation Forge</h2>
+  </div>
+  <div class="phase-meta p1">
+    <span>📅 <strong>Days 1–14</strong> · Master Niagara core. Build 14 effects. Every tutorial gets remixed into xianxia style.</span>
+    <span class="phase-counter" data-phase-counter="1">0 / 14</span>
+  </div>
+  <div class="days-grid" data-phase="1"></div>
+
+  <!-- ═══════════════ PHASE 2 ═══════════════ -->
+  <div class="section-header" id="phase2">
+    <div class="phase-tag p2">Phase 2</div>
+    <h2 class="section-title p2">The Donghua Arsenal</h2>
+  </div>
+  <div class="phase-meta p2">
+    <span>📅 <strong>Days 15–45</strong> · Recreate iconic xianxia VFX. Build your first portfolio reel.</span>
+    <span class="phase-counter" data-phase-counter="2">0 / 31</span>
+  </div>
+  <div class="callout purple">
+    <div class="callout-title">🐉 Reference These Donghua Shows Daily</div>
+    <p><strong>Battle Through the Heavens</strong> — faction wars, elemental cultivation, colored soul flames | <strong>Soul Land</strong> — spirit rings, battle spirits, beam ultimates | <strong>A Record of a Mortal's Journey to Immortality</strong> — ink-wash atmosphere, spiritual pressure | <strong>Martial Universe</strong> — qi resonance, formation arrays | <strong>The Demon Hunter (Cang Yuan Tu)</strong> — ink-wash martial choreography. Screenshot effects that inspire you BEFORE building each day.</p>
+  </div>
+  <div class="days-grid" data-phase="2"></div>
+
+  <!-- ═══════════════ PHASE 3 ═══════════════ -->
+  <div class="section-header" id="phase3">
+    <div class="phase-tag p3">Phase 3</div>
+    <h2 class="section-title p3">Advanced Techniques</h2>
+  </div>
+  <div class="phase-meta p3">
+    <span>📅 <strong>Days 46–65</strong> · Fluids, flipbooks, shader wizardry, Blueprint integration mastery.</span>
+    <span class="phase-counter" data-phase-counter="3">0 / 20</span>
+  </div>
+  <div class="days-grid" data-phase="3"></div>
+
+  <!-- ═══════════════ PHASE 4 ═══════════════ -->
+  <div class="section-header" id="phase4">
+    <div class="phase-tag p4">Phase 4</div>
+    <h2 class="section-title p4">Make Money 💰</h2>
+  </div>
+  <div class="phase-meta p4">
+    <span>📅 <strong>Days 66–90</strong> · FAB packs, freelancing, content presence, prototype game.</span>
+    <span class="phase-counter" data-phase-counter="4">0 / 25</span>
+  </div>
+
+  <!-- Revenue streams -->
   <div class="money-grid">
-    <div class="money-card"><h3>1. FAB Asset Packs</h3><p>Sell a "Xianxia/Cultivation VFX Pack" — auras, magic circles, elemental attacks. Underserved niche. ~88% revenue share to creators.</p><div class="days">Days 66–75</div></div>
-    <div class="money-card"><h3>2. Freelancing</h3><p>ArtStation portfolio + Upwork/Fiverr. Pitch: "Anime/xianxia ability VFX in UE5." Indie devs NEED juice-polish artists.</p><div class="days">Days 76–80</div></div>
-    <div class="money-card"><h3>3. Content Creation</h3><p>VFX breakdowns on X/Twitter, YouTube tutorials, Patreon project files (the CGHOW model).</p><div class="days">Days 81–85</div></div>
-    <div class="money-card"><h3>4. Your Own Game</h3><p>A VFX-driven cultivation arena fighter. Your combo system from Day 35 becomes gameplay.</p><div class="days">Days 86–90</div></div>
+    <div class="money-card">
+      <div class="money-stream">Revenue Stream 01</div>
+      <div class="money-icon">🏪</div>
+      <div class="money-title">Sell VFX Packs on FAB</div>
+      <div class="money-desc">Unreal's Fab marketplace gives you an <strong>88% revenue share</strong>. Xianxia/cultivation VFX is an underserved niche right now. Your Phase 2 effects literally become products.</div>
+      <div class="money-potential">💰 Target: $500–$2000/month passively</div>
+    </div>
+    <div class="money-card">
+      <div class="money-stream">Revenue Stream 02</div>
+      <div class="money-icon">💼</div>
+      <div class="money-title">Freelance for Indie Devs</div>
+      <div class="money-desc">Indie devs can code but can't make things look <em>juicy</em>. "Anime/Xianxia ability VFX in UE5" is a specific, searchable, hireable service. Post on Upwork, Fiverr, Discord indie servers.</div>
+      <div class="money-potential">💰 Target: $50–$300 per effect set</div>
+    </div>
+    <div class="money-card">
+      <div class="money-stream">Revenue Stream 03</div>
+      <div class="money-icon">🎥</div>
+      <div class="money-title">Tutorial Channel + Patreon</div>
+      <div class="money-desc">Record your process. VFX breakdowns go viral on Twitter/X. Tutorial channel + Patreon for project files (CGHOW and Gabriel Aguiar both do exactly this). Your unique niche: xianxia VFX.</div>
+      <div class="money-potential">💰 Target: $200–$1000/month growing</div>
+    </div>
+    <div class="money-card">
+      <div class="money-stream">Revenue Stream 04</div>
+      <div class="money-icon">🎮</div>
+      <div class="money-title">Your Own Xianxia Game</div>
+      <div class="money-desc">You're an indie dev! A cultivation/xianxia arena fighter with gorgeous VFX can attract serious attention. Your combat combo system from Day 35 is already a prototype. This is the long game.</div>
+      <div class="money-potential">💰 Target: Steam page → wishlists → launch</div>
+    </div>
   </div>
-</section>
 
-<!-- ===== RESOURCES ===== -->
-<section class="card">
-  <h2>🧰 Resource Toolkit</h2>
-  <table>
-    <tr><th>Resource</th><th>Best For</th><th>Type</th></tr>
-    <tr><td><b><a href="https://www.youtube.com/@CGHOW" target="_blank">CGHOW (Ashif Ali)</a></b></td><td>500+ Niagara tutorials, daily bite-sized effects</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b><a href="https://www.youtube.com/c/GabrielAguiarProd" target="_blank">Gabriel Aguiar Prod.</a></b></td><td>Stylized/anime game VFX — donghua energy & magic</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>UNF Games (YouTube)</b></td><td>Long-form beginner Niagara walkthroughs</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>RedefineFX</b></td><td>Niagara Fluids, volumetrics, destruction</td><td><span class="badge b-free">FREE + PAID</span></td></tr>
-    <tr><td><b>Stylized Station</b></td><td>Stylized art direction — "the donghua look"</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b><a href="https://dev.epicgames.com/documentation" target="_blank">Epic Niagara Docs</a></b></td><td>Quick Start, Key Concepts, official tutorials</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b><a href="https://realtimevfx.com" target="_blank">RealtimeVFX.com</a></b></td><td>THE pro community — feedback, sketches, jobs</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>Niagara Examples Pack (FAB)</b></td><td>Epic's free study pack — dissect pro effects</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>VFX Apprentice</b></td><td>Theory (shape/color/timing) + stylized classes</td><td><span class="badge b-free">FREE + PAID</span></td></tr>
-    <tr><td><b>Gnomon — Stylized VFX in UE5</b></td><td>Pro workflow: Houdini + Substance + Niagara</td><td><span class="badge b-paid">PAID</span></td></tr>
-    <tr><td><b>Blender</b></td><td>Custom slash meshes, rings, magic circles</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>Krita</b></td><td>Hand-painted flipbook textures (2D FX)</td><td><span class="badge b-free">FREE</span></td></tr>
-    <tr><td><b>DaVinci Resolve</b></td><td>Edit portfolio reels</td><td><span class="badge b-free">FREE</span></td></tr>
-  </table>
-</section>
+  <div class="days-grid" data-phase="4" style="margin-top:16px"></div>
 
-<!-- ===== DAILY ROUTINE ===== -->
-<section class="card">
-  <h2>📋 Daily Routine Template</h2>
-  <div class="routine">
-    <div class="routine-block"><h3>🌅 Morning (3–4h)</h3><ul><li>Gather references (donghua clips!)</li><li>Watch tutorial, take notes</li><li>Follow along in-engine</li></ul></div>
-    <div class="routine-block"><h3>☀️ Afternoon (3–4h)</h3><ul><li>Rebuild WITHOUT watching</li><li>Remix into your xianxia version</li><li>Break stuff. Experiment.</li></ul></div>
-    <div class="routine-block"><h3>🌙 Evening (2–3h)</h3><ul><li>Polish daily output</li><li>Hook into Blueprint/character</li><li>Record clip → post online</li><li>Save to "VFX Library" folder</li></ul></div>
-    <div class="routine-block"><h3>📸 Every Day</h3><ul><li>Screenshot/video output</li><li>Label: Day_XX_EffectName</li><li>Check the box on this page ✅</li><li>Portfolio builds itself</li></ul></div>
+  <!-- Pack ideas -->
+  <div class="callout gold" style="margin-top:20px">
+    <div class="callout-title">💡 Your First Pack Ideas for FAB</div>
+    <p>These niches are currently <strong>underserved</strong> on Fab as of mid-2026:</p>
   </div>
-</section>
+  <div class="pack-grid">
+    <div class="pack-card"><div class="pack-icon">🌀</div><div class="pack-name">Xianxia Skill Starter Pack</div><div class="pack-note">Aura, circle, slash, beam, portal — essential cultivation effects</div></div>
+    <div class="pack-card"><div class="pack-icon">⚔️</div><div class="pack-name">Sword Slash + Dash Trail Pack</div><div class="pack-note">12 slash variants + 6 dash trails — instant action game feel</div></div>
+    <div class="pack-card"><div class="pack-icon">✨</div><div class="pack-name">Aura / Breakthrough Pack</div><div class="pack-note">Power-up states, realm breakthrough, transformation sequences</div></div>
+    <div class="pack-card"><div class="pack-icon">🌊</div><div class="pack-name">4-Element Projectile Pack</div><div class="pack-note">Fire, Ice, Lightning, Water — each with projectile + impact</div></div>
+  </div>
 
-<!-- ===== MILESTONES ===== -->
-<section class="card">
-  <h2>🏆 Milestone Checkpoints (Cultivation Realms)</h2>
-  <table id="milestoneTable">
-    <tr><th>Day</th><th>Realm</th><th>Milestone</th><th>You Should Feel</th></tr>
-    <tr data-day="7"><td>7</td><td>🌱 Qi Condensation</td><td>7 individual effects built</td><td>"I get how Niagara works!"</td></tr>
-    <tr data-day="14"><td>14</td><td>⚡ Foundation Establishment</td><td>Materials + mesh particles mastered</td><td>"I can make ANYTHING glow"</td></tr>
-    <tr data-day="30"><td>30</td><td>💫 Golden Core</td><td>First cinematic rendered</td><td>"Holy crap, I made that?!"</td></tr>
-    <tr data-day="45"><td>45</td><td>🔮 Nascent Soul</td><td>Boss fight reel done</td><td>"This looks like a real game"</td></tr>
-    <tr data-day="65"><td>65</td><td>🌌 Soul Formation</td><td>Playable VFX demo</td><td>"I'm actually good at this"</td></tr>
-    <tr data-day="75"><td>75</td><td>☯️ Ascension</td><td>First asset pack on FAB</td><td>"I'm a VFX entrepreneur"</td></tr>
-    <tr data-day="90"><td>90</td><td>🐉 Immortal</td><td>Multiple income streams live</td><td>"I'm a professional VFX artist" 💪</td></tr>
+  <!-- ═══════════════ SENSEIS ═══════════════ -->
+  <div class="section-header" id="senseis">
+    <div class="phase-tag p3">Resources</div>
+    <h2 class="section-title jade">Your YouTube Sensei Lineup</h2>
+  </div>
+  <div class="channels-grid">
+    <div class="channel-card jade">
+      <div class="channel-icon">⚡</div>
+      <div class="channel-name">CGHOW (Ashif Ali)</div>
+      <div class="channel-handle jade">@CGHOW</div>
+      <div class="channel-desc">500+ free Niagara tutorials. The most prolific UE5 VFX tutorial creator alive. Posts weekly. Perfect for daily bite-sized effects — just search whatever effect you want to make.</div>
+      <div class="channel-tags"><span class="channel-tag">Niagara</span><span class="channel-tag">Daily tutorials</span><span class="channel-tag">Sword VFX</span><span class="channel-tag">Free</span></div>
+      <a href="https://www.youtube.com/@CGHOW" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+    <div class="channel-card gold">
+      <div class="channel-icon">🔮</div>
+      <div class="channel-name">Gabriel Aguiar Prod.</div>
+      <div class="channel-handle gold">@GabrielAguiarProd</div>
+      <div class="channel-desc">The stylized/anime VFX legend. Focuses on game-ready visual effects — explosions, auras, splashes, impacts. His aesthetic is closest to the donghua style you're chasing.</div>
+      <div class="channel-tags"><span class="channel-tag">Stylized</span><span class="channel-tag">Anime style</span><span class="channel-tag">Auras</span><span class="channel-tag">Projectiles</span></div>
+      <a href="https://www.youtube.com/c/GabrielAguiarProd" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+    <div class="channel-card purple">
+      <div class="channel-icon">🌊</div>
+      <div class="channel-name">RedefineFX</div>
+      <div class="channel-handle purple">@RedefineFX</div>
+      <div class="channel-desc">Niagara Fluids specialist. Free 12-video crash course at redefinefx.com/BLAST. Best for volumetric simulations, cinematic smoke, ink-wash effects, and advanced setups.</div>
+      <div class="channel-tags"><span class="channel-tag">Niagara Fluids</span><span class="channel-tag">Volumetric</span><span class="channel-tag">Free course</span><span class="channel-tag">Advanced</span></div>
+      <a href="https://www.youtube.com/@RedefineFX" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+    <div class="channel-card crimson">
+      <div class="channel-icon">🎓</div>
+      <div class="channel-name">UNF Games</div>
+      <div class="channel-handle crimson">@UNFGames</div>
+      <div class="channel-desc">Long-form beginner walkthroughs with great explanation of the WHY behind every step. Great for building a solid foundation — their UE5.3 VFX introduction is where you should start Day 1.</div>
+      <div class="channel-tags"><span class="channel-tag">Beginners</span><span class="channel-tag">Long-form</span><span class="channel-tag">Foundation</span><span class="channel-tag">Weapon VFX</span></div>
+      <a href="https://www.youtube.com/@UNFGames" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+    <div class="channel-card blue">
+      <div class="channel-icon">🎨</div>
+      <div class="channel-name">PrismaticaDev</div>
+      <div class="channel-handle blue">@PrismaticaDev</div>
+      <div class="channel-desc">Materials and shaders deep dives. The go-to channel when you want to understand WHY a shader node works the way it does. Essential for your material mastery phase (Days 8–10).</div>
+      <div class="channel-tags"><span class="channel-tag">Materials</span><span class="channel-tag">Shaders</span><span class="channel-tag">Technical</span><span class="channel-tag">Deep dives</span></div>
+      <a href="https://www.youtube.com/@PrismaticaDev" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+    <div class="channel-card jade">
+      <div class="channel-icon">🌈</div>
+      <div class="channel-name">Stylized Station</div>
+      <div class="channel-handle jade">@StylizedStation</div>
+      <div class="channel-desc">The "look" of donghua. Stylized and anime art direction, 2D/3D hybrid techniques, character shaders. When you want your effects to feel hand-crafted rather than generic, this is your reference.</div>
+      <div class="channel-tags"><span class="channel-tag">Stylized</span><span class="channel-tag">Anime art</span><span class="channel-tag">2D/3D hybrid</span><span class="channel-tag">Direction</span></div>
+      <a href="https://www.youtube.com/@StylizedStation" target="_blank" rel="noopener" class="channel-link">▶ Open Channel →</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════ COURSES ═══════════════ -->
+  <div class="section-header" id="courses">
+    <div class="phase-tag p2">Courses</div>
+    <h2 class="section-title p2">Best Structured Courses</h2>
+  </div>
+  <div class="courses-grid">
+    <div class="course-card">
+      <span class="course-price free">FREE</span>
+      <div class="course-name">Epic Official Niagara Docs</div>
+      <div class="course-author">Epic Games</div>
+      <div class="course-desc">Quick Start Guide, Key Concepts, beam/ribbon/footstep smoke tutorials. Always updated for the latest UE5 version. Your daily reference.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price free">FREE</span>
+      <div class="course-name">RedefineFX Niagara Fluids Crash Course</div>
+      <div class="course-author">RedefineFX</div>
+      <div class="course-desc">12 videos, 4 complete FX setups. Ultra beginner-friendly intro to volumetric real-time simulations. Get it at redefinefx.com/BLAST.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price free">FREE</span>
+      <div class="course-name">VFX Apprentice Level Zero + One</div>
+      <div class="course-author">VFX Apprentice</div>
+      <div class="course-desc">Free intro to game VFX theory — departments, art styles, tools, color, shape, timing theory. Level One teaches VFX communication principles. Watch in Week 1.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price free">FREE</span>
+      <div class="course-name">Niagara Examples Pack</div>
+      <div class="course-author">Epic Games (Fab)</div>
+      <div class="course-desc">Free official pack with explosions, impacts, trails, fire/smoke, lightning, hit dissolves, buff/debuff effects, built with best practices like Effect Types and Lightweight Emitters. Download Day 1!</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price paid">PAID ~$15</span>
+      <div class="course-name">UE5: One Course Solution for Niagara VFX</div>
+      <div class="course-author">Udemy (sale price)</div>
+      <div class="course-desc">Project-based, starts simple, builds to professional effects. Covers Portal FX, Rain, Projectile, Energy Strike, character disintegration. Includes Blueprint + Blender integration.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price premium">PREMIUM</span>
+      <div class="course-name">RedefineFX Complete Collection</div>
+      <div class="course-author">RedefineFX</div>
+      <div class="course-desc">6 premium courses, 400+ total lessons. The most comprehensive Niagara deep-dive available commercially. Best for Month 3–4 when you want to go truly pro-level.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price premium">PREMIUM</span>
+      <div class="course-name">Gnomon Workshop: Stylized VFX in UE5</div>
+      <div class="course-author">Pawel Margacz</div>
+      <div class="course-desc">4.5-hour pro workflow — Houdini meshes, Substance Designer textures, Niagara assembly. This is how AAA studios build magical projectile FX. Best for Month 4+.</div>
+    </div>
+    <div class="course-card">
+      <span class="course-price premium">MENTORED</span>
+      <div class="course-name">VFX Apprentice Stylized Class</div>
+      <div class="course-author">VFX Apprentice</div>
+      <div class="course-desc">8-week guided boss-fight VFX course in a production-mimicking environment. Includes portfolio guidance and job application prep. Best for real human feedback.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TOOLS ═══════════════ -->
+  <div class="section-header" id="tools-section">
+    <div class="phase-tag p3">Arsenal</div>
+    <h2 class="section-title p3">Your Complete Tool Arsenal</h2>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">🔥</div><div class="tool-name">Unreal Engine 5</div><div class="tool-type">FREE · NOW</div><div class="tool-desc">Niagara, Control Rig, Sequencer, Material Editor, Blueprint — your main battlefield</div></div>
+    <div class="tool-card"><div class="tool-icon">🫐</div><div class="tool-name">Blender</div><div class="tool-type">FREE · MONTH 2</div><div class="tool-desc">Custom VFX meshes: crescent slashes, magic circles, formation rings</div></div>
+    <div class="tool-card"><div class="tool-icon">✏️</div><div class="tool-name">Krita</div><div class="tool-type">FREE · MONTH 2</div><div class="tool-desc">Hand-paint donghua flipbook spritesheets — the 2D-in-3D magic</div></div>
+    <div class="tool-card"><div class="tool-icon">🎬</div><div class="tool-name">DaVinci Resolve</div><div class="tool-type">FREE · NOW</div><div class="tool-desc">Edit portfolio reels, add music, color grade cinematic renders</div></div>
+    <div class="tool-card"><div class="tool-icon">🕺</div><div class="tool-name">Mixamo</div><div class="tool-type">FREE · WEEK 3</div><div class="tool-desc">Free rigged characters + hundreds of mocap animations → retarget to UE5</div></div>
+    <div class="tool-card"><div class="tool-icon">🌊</div><div class="tool-name">EmberGen</div><div class="tool-type">PAID · MONTH 3</div><div class="tool-desc">Real-time fire/smoke sims → export flipbooks for Niagara. Industry shortcut.</div></div>
+    <div class="tool-card"><div class="tool-icon">⚗️</div><div class="tool-name">Houdini Apprentice</div><div class="tool-type">FREE TIER · MONTH 5</div><div class="tool-desc">SideFX Labs for flipbooks, VATs, and advanced sim exports. Free apprentice works.</div></div>
+    <div class="tool-card"><div class="tool-icon">🎨</div><div class="tool-name">Substance Designer</div><div class="tool-type">PAID · MONTH 4</div><div class="tool-desc">Procedural VFX textures — energy patterns, rune textures, tiling materials</div></div>
+  </div>
+
+  <!-- ═══════════════ ROUTINE ═══════════════ -->
+  <div class="section-header" id="routine">
+    <div class="phase-tag p1">Daily</div>
+    <h2 class="section-title p1">Your Full-Day Learning Formula</h2>
+  </div>
+  <div class="routine-grid">
+    <div class="routine-block morning">
+      <div class="routine-time">🌅 Morning · 3–4 Hours</div>
+      <div class="routine-icon">📚</div>
+      <div class="routine-title">Learn Mode</div>
+      <ul class="routine-tasks">
+        <li>Collect reference screenshots from donghua shows</li>
+        <li>Break down the effect: what layers does it have?</li>
+        <li>Watch the tutorial, take notes on key nodes</li>
+        <li>Follow along step-by-step in UE5</li>
+      </ul>
+    </div>
+    <div class="routine-block afternoon">
+      <div class="routine-time">☀️ Afternoon · 3–4 Hours</div>
+      <div class="routine-icon">🔨</div>
+      <div class="routine-title">Build Mode</div>
+      <ul class="routine-tasks">
+        <li>Rebuild the effect WITHOUT watching — from memory</li>
+        <li>Change color, timing, scale: make it YOUR version</li>
+        <li>Make it donghua/xianxia flavored</li>
+        <li>Break stuff on purpose — learn each parameter</li>
+      </ul>
+    </div>
+    <div class="routine-block evening">
+      <div class="routine-time">🌙 Evening · 2–3 Hours</div>
+      <div class="routine-icon">✨</div>
+      <div class="routine-title">Polish &amp; Post Mode</div>
+      <ul class="routine-tasks">
+        <li>Polish daily output: color, timing, size</li>
+        <li>Record a short clip or GIF of the effect</li>
+        <li>Post it: Twitter/X, Reddit r/unrealengine, Discord</li>
+        <li>Save to "VFX Library" folder → future FAB pack</li>
+      </ul>
+    </div>
+    <div class="routine-block rule">
+      <div class="routine-time">📸 Every Single Day</div>
+      <div class="routine-icon">🎯</div>
+      <div class="routine-title">The Non-Negotiable Rule</div>
+      <ul class="routine-tasks">
+        <li>Name your file: "Day_XX_EffectName"</li>
+        <li>One finished, polished output — no exceptions</li>
+        <li>Post publicly — accountability builds momentum</li>
+        <li>Mark the day complete in the tracker ↑</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ MILESTONES ═══════════════ -->
+  <div class="section-header" id="milestones">
+    <div class="phase-tag p4">Checkpoints</div>
+    <h2 class="section-title p4">Cultivation Realm Milestones</h2>
+  </div>
+  <table class="milestone-table" id="milestoneTable">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Realm</th>
+        <th>What You've Built</th>
+        <th>The Feeling</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-milestone="7"><td class="ms-day-cell">Day 7</td><td class="ms-realm">🌱 Qi Condensation</td><td>7 individual effects — orb, fire, smoke, explosion, trail, lightning, weapon</td><td class="ms-feel">"I get how Niagara actually works!"</td></tr>
+      <tr data-milestone="14"><td class="ms-day-cell">Day 14</td><td class="ms-realm">⚡ Foundation Establishment</td><td>Material library + mesh particles + first cultivation power-up scene</td><td class="ms-feel">"I can make ANYTHING glow and dissolve."</td></tr>
+      <tr data-milestone="30"><td class="ms-day-cell">Day 30</td><td class="ms-realm">💫 Golden Core</td><td>First rendered cinematic — cultivation breakthrough posted online</td><td class="ms-feel">"Holy crap. I made THAT."</td></tr>
+      <tr data-milestone="45"><td class="ms-day-cell">Day 45</td><td class="ms-realm">🔮 Nascent Soul</td><td>60-second boss fight reel — full xianxia action sequence</td><td class="ms-feel">"This looks like a real game cinematic."</td></tr>
+      <tr data-milestone="65"><td class="ms-day-cell">Day 65</td><td class="ms-realm">🌌 Soul Formation</td><td>Fully playable VFX demo with 4 selectable spells wired into Blueprint</td><td class="ms-feel">"I'm actually good at this now."</td></tr>
+      <tr data-milestone="75"><td class="ms-day-cell">Day 75</td><td class="ms-realm">☯️ Ascension</td><td>First asset pack submitted to FAB — passive income product live</td><td class="ms-feel">"I'm a VFX entrepreneur."</td></tr>
+      <tr data-milestone="90"><td class="ms-day-cell">Day 90</td><td class="ms-realm">🐉 Immortal</td><td>FAB pack live + freelance profile + ArtStation reel + social presence</td><td class="ms-feel">"I am a professional VFX artist." 💪</td></tr>
+    </tbody>
   </table>
-</section>
 
-<footer>Built for the grind. Day 1 starts NOW. 🔥 — Progress auto-saves in your browser.</footer>
+  <!-- Beyond Day 90 -->
+  <div class="section-header" style="margin-top:48px">
+    <div class="phase-tag p2">Beyond Day 90</div>
+    <h2 class="section-title p2">Months 2–6 Progression</h2>
+  </div>
+  <div class="milestone-range p1">
+    <div class="ms-header"><div class="ms-title">Month 2 — The Xianxia Library</div><span class="ms-days p1">Days 91–120</span></div>
+    <div class="ms-desc">Build a <strong>10-effect xianxia master library</strong>: slash, aura, dash, beam, portal, impact, buff, summon, shield, transformation. Every effect parameterized, reusable, portfolio-ready.</div>
+    <div class="ms-outputs"><span class="ms-output-tag p1">10 polished effects</span><span class="ms-output-tag p1">Master parameter system</span><span class="ms-output-tag p1">Portfolio reel v2</span></div>
+  </div>
+  <div class="milestone-range p2">
+    <div class="ms-header"><div class="ms-title">Month 3 — Gameplay-Ready Assets</div><span class="ms-days p2">Days 121–150</span></div>
+    <div class="ms-desc">Turn your library into <strong>fully gameplay-ready assets</strong> with Blueprint controls, surface detection, scalability settings, and clear documentation. Learn Niagara Fluids and Niagara Baker for flipbook baking.</div>
+    <div class="ms-outputs"><span class="ms-output-tag p2">Blueprint VFX system</span><span class="ms-output-tag p2">Niagara Fluids effects</span><span class="ms-output-tag p2">FAB pack vol.2</span></div>
+  </div>
+  <div class="milestone-range p3">
+    <div class="ms-header"><div class="ms-title">Month 4 — Optimization &amp; Scalability</div><span class="ms-days p3">Days 151–180</span></div>
+    <div class="ms-desc">Learn <strong>Effect Types, Lightweight Emitters (UE 5.4+), scalability groups, overdraw optimization</strong>. Your effects run on mobile, Switch, and high-end PC. This is what studios actually care about.</div>
+    <div class="ms-outputs"><span class="ms-output-tag p3">Lightweight Emitters</span><span class="ms-output-tag p3">Scalability system</span><span class="ms-output-tag p3">Mobile-ready VFX</span></div>
+  </div>
+  <div class="milestone-range p4">
+    <div class="ms-header"><div class="ms-title">Month 5–6 — Studio-Level Pipeline</div><span class="ms-days p4">Days 181–270</span></div>
+    <div class="ms-desc">Learn <strong>EmberGen for flipbook baking, Houdini SideFX Labs for VATs, Substance Designer for procedural VFX textures</strong>. Build a workflow reel matching AAA studios. This is where you become hireable at real studios.</div>
+    <div class="ms-outputs"><span class="ms-output-tag p4">EmberGen flipbooks</span><span class="ms-output-tag p4">Houdini VAT export</span><span class="ms-output-tag p4">Studio reel</span><span class="ms-output-tag p4">$5K+/month potential</span></div>
+  </div>
+
+  <!-- ═══════════════ COMMUNITY ═══════════════ -->
+  <div class="section-header">
+    <div class="phase-tag p3">Community</div>
+    <h2 class="section-title p3">Your Community Home Base</h2>
+  </div>
+  <div class="callout jade">
+    <div class="callout-title">🏠 RealtimeVFX.com — Your Professional Home</div>
+    <p>Every professional game VFX artist hangs out on <strong>RealtimeVFX.com</strong>. It has a Getting Started resource thread, monthly sketch challenges (join every month — you'll improve 10x faster with deadlines), active job boards, critique threads, and a community that gives real feedback. Post your Day 30 cinematic there first.</p>
+  </div>
+  <div class="channels-grid" style="margin-top:16px">
+    <div class="channel-card jade">
+      <div class="channel-icon">🌐</div>
+      <div class="channel-name">RealtimeVFX</div>
+      <div class="channel-handle jade">realtimevfx.com</div>
+      <div class="channel-desc">The #1 professional game VFX community. Monthly sketch challenges, job board, critique, resources, discourse with actual AAA artists.</div>
+      <a href="https://realtimevfx.com" target="_blank" rel="noopener" class="channel-link">→ Join Community</a>
+    </div>
+    <div class="channel-card gold">
+      <div class="channel-icon">🎨</div>
+      <div class="channel-name">ArtStation</div>
+      <div class="channel-handle gold">artstation.com</div>
+      <div class="channel-desc">Your public portfolio platform. Post every major output here. Clients and studios search here. Your reel at Day 45 + Day 65 are your first two posts.</div>
+      <a href="https://artstation.com" target="_blank" rel="noopener" class="channel-link">→ Create Portfolio</a>
+    </div>
+    <div class="channel-card purple">
+      <div class="channel-icon">🐦</div>
+      <div class="channel-name">Twitter/X — #VFXFriday</div>
+      <div class="channel-handle purple">x.com</div>
+      <div class="channel-desc">VFX artists go viral here. Post every Friday with #VFXFriday #UnrealEngine #GameDev. Short looping GIFs perform best. Your fastest growth channel.</div>
+      <a href="https://x.com" target="_blank" rel="noopener" class="channel-link">→ Start Posting</a>
+    </div>
+    <div class="channel-card crimson">
+      <div class="channel-icon">🏪</div>
+      <div class="channel-name">FAB Marketplace</div>
+      <div class="channel-handle crimson">fab.com</div>
+      <div class="channel-desc">Unreal's asset marketplace. 88% revenue share. Your passive income product home. Check what's selling, find gaps, fill them with your xianxia niche packs.</div>
+      <a href="https://fab.com" target="_blank" rel="noopener" class="channel-link">→ Explore Marketplace</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <div class="divider"></div>
+  <div class="footer">
+    <div class="footer-title float">🔥 Your Journey Starts Now 🔥</div>
+    <p class="footer-quote">"The cultivator who takes one step today is already ahead of the genius who waits for the perfect moment."</p>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:24px;">
+      Open UE5. Create a Niagara System from the Fountain template.<br/>
+      Break it. Recolor it. Make it weird. That is <strong class="glow-text-gold">Day 1</strong>.
+    </p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+      <span class="hero-badge" style="cursor:default;animation:none">⚡ UE5 Niagara</span>
+      <span class="hero-badge" style="cursor:default;animation:none;border-color:rgba(0,255,179,0.3);color:var(--jade)">🐉 Xianxia VFX</span>
+      <span class="hero-badge" style="cursor:default;animation:none;border-color:rgba(168,85,247,0.3);color:var(--purple2)">💰 Make Money</span>
+    </div>
+    <div class="footer-meta">90-DAY VFX WARRIOR PATH · TAILORED FOR INDIE DEV · DONGHUA STYLE · 2026</div>
+  </div>
 </div>
 
 <script>
 /* ================= DATA: ALL 90 DAYS ================= */
 const DAYS = [
- // PHASE 1 (1-14)
- {d:1,p:1,t:"The Spark 🌟",l:"Niagara architecture: System → Emitter → Module → Parameters",w:"UNF Games 'Complete Intro to VFX Niagara' + Epic Quick Start docs",o:"Floating magic orb with exposed color/size User Parameters"},
- {d:2,p:1,t:"First Flame 🔥",l:"Sprite particles, SubUV flipbooks, color over life",w:"CGHOW — Fire VFX Niagara UE5",o:"Stylized campfire: flickering flames + rising embers"},
- {d:3,p:1,t:"Smokescreen 💨",l:"Smoke materials, curl noise, drag forces",w:"UNF Games smoke/steam tutorial",o:"Thick combat smoke that curls and fades"},
- {d:4,p:1,t:"The Explosion 💥",l:"Burst spawn, multi-emitter layering, debris",w:"Gabriel Aguiar — Stylized Explosion UE5",o:"4-layer explosion: fire core + smoke + sparks + debris"},
- {d:5,p:1,t:"The Trail ✨",l:"Ribbon renderer, spawn rate, width curves",w:"CGHOW — Ribbon Trail Niagara",o:"Glowing sword trail attached to mannequin hand"},
- {d:6,p:1,t:"Storm Caller ⚡",l:"Lightning textures, mesh particles, Fresnel glow",w:"CGHOW — Lightning Sphere Niagara",o:"Energy sphere with lightning arcing on surface (very donghua!)"},
- {d:7,p:1,t:"Weapon Enchant ⚔️",l:"Multi-layer VFX composition on weapon mesh",w:"UNF Games — Weapon Glow VFX from scratch",o:"Enchanted sword: hilt glow + body aura + sparks",boss:true},
- {d:8,p:1,t:"Material Mastery I 🎨",l:"Dissolve/erosion, emissive intensity, Depth Fade",w:"CGHOW — Dissolve Material",o:"Dissolve/disintegration material (Thanos snap)"},
- {d:9,p:1,t:"Material Mastery II 🎨",l:"Panner, UV distortion, noise textures",w:"Gabriel Aguiar — VFX Material Basics",o:"Scrolling energy material with UV distortion"},
- {d:10,p:1,t:"Material Mastery III 🎨",l:"Fresnel + noise combos, intersection glow",w:"PrismaticaDev material videos",o:"Qi/cultivation barrier shield material"},
- {d:11,p:1,t:"Blender Blades 🔪",l:"Custom mesh export: pivots, orientation, scale",w:"Blender→UE5 mesh export tutorial (CGHOW/UNF)",o:"Custom crescent slash mesh exported from Blender"},
- {d:12,p:1,t:"Formation Circle 🔮",l:"Mesh renderer, rotation rate, texture rings",w:"CGHOW — Magic Circle Niagara",o:"Spinning xianxia cultivation circle"},
- {d:13,p:1,t:"Energy Beam 📡",l:"Beam emitters + ribbon/mesh combo",w:"Epic docs — Beam Effect tutorial",o:"Chargeable energy beam attack"},
- {d:14,p:1,t:"⚡ BOSS: Power-Up Sequence",l:"Composition — combining everything from Week 1-2",w:"Your own brain. No tutorial.",o:"Full power-up: circle underfoot + rising energy + lightning sphere + qi aura",boss:true},
- // PHASE 2 (15-45)
- {d:15,p:2,t:"Qi Aura I",l:"Inner body glow — Fresnel material on character mesh",w:"Gabriel Aguiar — Character Aura Effect UE5",o:"Body glow layer on character"},
- {d:16,p:2,t:"Qi Aura II",l:"GPU sprites orbiting character, velocity + noise wisps",w:"CGHOW — Energy Aura Niagara",o:"Swirling orbit particles + rising wisps"},
- {d:17,p:2,t:"Qi Aura III",l:"Ground crack decals + dust burst",w:"Decal + Niagara burst tutorials",o:"Ground impact layer under aura"},
- {d:18,p:2,t:"⚡ BOSS: Full Xianxia Aura",l:"Blueprint trigger + screen shake (your advantage!)",w:"Combine days 15-17",o:"Complete power-up aura on keypress via Blueprint",boss:true},
- {d:19,p:2,t:"Fire Projectile 🔥",l:"Projectile core + trail + heat distortion",w:"Gabriel Aguiar — Magic Projectile series",o:"Fire dragon ball with trailing flames"},
- {d:20,p:2,t:"Ice Projectile ❄️",l:"Mesh particles + frost trail",w:"Same series, remix yourself",o:"Ice shard volley"},
- {d:21,p:2,t:"Lightning Projectile ⚡",l:"Ribbon + branching sparks",w:"Remix your Day 6 lightning",o:"Lightning bolt attack"},
- {d:22,p:2,t:"⚡ BOSS: Water Whip + Master Material",l:"One master material, params: erosion/color/distortion/vertex offset",w:"Parameter-rich material workflow",o:"4 elemental projectiles firing from hand via Blueprint",boss:true},
- {d:23,p:2,t:"Wall Impact",l:"Radial cracks + debris + dust + flash",w:"CGHOW — Impact VFX",o:"Projectile→wall impact effect"},
- {d:24,p:2,t:"Ground Slam",l:"Shockwave ring + fracture + camera shake",w:"Gabriel Aguiar — Shockwave",o:"AOE ground slam"},
- {d:25,p:2,t:"Elemental Impacts I",l:"Fire + ice impact variants",w:"Remix days 19-20",o:"2 matching elemental explosions"},
- {d:26,p:2,t:"⚡ Elemental Impacts II",l:"Lightning + water impact variants",w:"Remix days 21-22",o:"All 4 projectiles have matching impacts",boss:true},
- {d:27,p:2,t:"Breakthrough Scene I",l:"Sequencer basics, Mixamo meditation pose import",w:"Epic — How to Animate with Sequencer",o:"Character posed in scene, camera blocked"},
- {d:28,p:2,t:"Breakthrough Scene II",l:"Choreograph: circle → energy spiral → lightning strike",w:"Your VFX library",o:"Mid-sequence VFX timed in Sequencer"},
- {d:29,p:2,t:"Breakthrough Scene III",l:"Aura explosion + new aura state, post-process volume",w:"Movie Render Queue tutorial",o:"Full sequence assembled"},
- {d:30,p:2,t:"🏆 BOSS: Cultivation Breakthrough Cinematic",l:"Render + edit + music",w:"DaVinci Resolve",o:"30-second cinematic rendered → POST ON SOCIAL MEDIA 🚀",boss:true},
- {d:31,p:2,t:"Combat Slash I",l:"Horizontal slash: crescent mesh + trail",w:"CGHOW — Slash VFX + UNF FFXIV-style sword VFX",o:"Hit 1 of combo"},
- {d:32,p:2,t:"Combat Slash II",l:"Upward slash: vertical arc + sparks",w:"Gabriel Aguiar — Sword Slash Effect",o:"Hit 2 of combo"},
- {d:33,p:2,t:"Finisher",l:"Screen flash + shockwave + debris",w:"Remix your explosion",o:"Hit 3 finishing move"},
- {d:34,p:2,t:"Hit-Stop & Juice",l:"Blueprint hit-stop, impact frames, timing polish",w:"Game feel / juice videos",o:"Combo feels CRUNCHY"},
- {d:35,p:2,t:"⚡ BOSS: 3-Hit Combo System",l:"Full Blueprint integration",w:"Combine days 31-34",o:"Playable 3-hit combo with full VFX in-game",boss:true},
- {d:36,p:2,t:"Mystic Waterfall",l:"Stylized water + splash",w:"Gabriel Aguiar — Anime Waterfall Splash",o:"Anime waterfall with splash"},
- {d:37,p:2,t:"Spirit Particles",l:"Ambient fireflies / floating motes",w:"CGHOW — Fireflies",o:"Drifting spirit particles"},
- {d:38,p:2,t:"Mist & Fog",l:"Volumetric-feel Niagara fog",w:"CGHOW — Fog/Mist",o:"Layered mountain mist"},
- {d:39,p:2,t:"Spirit Tree",l:"Glowing leaf particles + pulsing runes",w:"Remix your library",o:"Spirit tree + ancient formation lights"},
- {d:40,p:2,t:"⚡ BOSS: Xianxia Environment",l:"Composition + lighting + atmosphere",w:"Combine days 36-39",o:"Full environment dripping with VFX atmosphere",boss:true},
- {d:41,p:2,t:"Boss Fight: Blocking",l:"Storyboard the 60s fight, camera plan",w:"Reference: Battle Through the Heavens fights",o:"Shot list + blocked cameras"},
- {d:42,p:2,t:"Boss Fight: Attacks",l:"Design a unique boss attack VFX",w:"Your own design!",o:"1 original boss attack"},
- {d:43,p:2,t:"Boss Fight: The Clash",l:"Beam clash / colliding attacks → massive explosion",w:"Beam clash tutorials",o:"Clash centerpiece moment"},
- {d:44,p:2,t:"Boss Fight: Assembly",l:"Sequencer assembly, sound placeholder",w:"Sequencer workflow",o:"Full fight assembled"},
- {d:45,p:2,t:"🏆 BOSS: 60-Second Fight Reel",l:"Render, edit, grade",w:"DaVinci Resolve",o:"PORTFOLIO-READY boss fight reel → POST EVERYWHERE",boss:true},
- // PHASE 3 (46-65)
- {d:46,p:3,t:"Niagara Fluids I",l:"Fluids setup, 2D vs 3D templates",w:"RedefineFX free Niagara Fluids course",o:"First fluid sim running"},
- {d:47,p:3,t:"Fire Breath",l:"Volumetric fire, temperature/buoyancy",w:"RedefineFX fluids lessons",o:"Volumetric dragon fire breath"},
- {d:48,p:3,t:"Ink FX 🖌️",l:"Fluid ink — the ink-wash donghua signature!",w:"Fluid ink tutorials",o:"Ink-wash style fluid effect"},
- {d:49,p:3,t:"Smoke Plumes",l:"Realistic volumetric smoke",w:"RedefineFX",o:"Cinematic smoke plume"},
- {d:50,p:3,t:"⚡ Bake It Down",l:"Niagara Baker → flipbooks for game-ready FX",w:"Niagara Baker docs/tutorials",o:"Baked flipbook from your fluid sim",boss:true},
- {d:51,p:3,t:"2D FX Drawing I",l:"Hand-drawn slash arcs in Krita",w:"VFX Apprentice free content + 2D FX refs",o:"Hand-drawn slash flipbook sheet"},
- {d:52,p:3,t:"2D FX Drawing II",l:"Energy bursts + impact rings",w:"Stylized Station",o:"2 more flipbook sheets"},
- {d:53,p:3,t:"2D FX Drawing III",l:"Smoke puffs, anime timing (snappy!)",w:"12 Principles of Animation (Alan Becker)",o:"Smoke puff flipbook"},
- {d:54,p:3,t:"2D→3D Import",l:"Flipbooks into Niagara SubUV + dissolve maps",w:"Flipbook import workflow",o:"Hand-drawn FX running in-engine"},
- {d:55,p:3,t:"⚡ BOSS: Hybrid Donghua Slash",l:"2D flipbook + 3D particles combined",w:"Your synthesis",o:"INSTANT donghua-feel hybrid slash",boss:true},
- {d:56,p:3,t:"Shader: Pan-Distort Master",l:"Main texture + noise + full parameter control",w:"Master material tutorials",o:"Reusable pan-distort master material"},
- {d:57,p:3,t:"Shader: Holographic",l:"Scanlines, glitch, fresnel rim",w:"Holo shader tutorials",o:"Holographic material"},
- {d:58,p:3,t:"Shader: Force Field",l:"Dome + intersection highlighting (Depth Fade)",w:"Force field tutorials",o:"Force field dome shader"},
- {d:59,p:3,t:"Shader: Ink-Wash Dissolve",l:"Watercolor/ink dissolve for donghua style",w:"Your Day 48 + dissolve knowledge",o:"Ink-wash dissolve material"},
- {d:60,p:3,t:"⚡ Shader Library Complete",l:"Organize, document, name everything",w:"—",o:"10+ reusable VFX materials in a library",boss:true},
- {d:61,p:3,t:"BP: Trigger Systems",l:"VFX on input, gameplay events",w:"Epic — Blueprint execution with Niagara",o:"Input-triggered spell system"},
- {d:62,p:3,t:"BP: Reactive VFX",l:"Health-based aura changes, state-driven FX",w:"Your Blueprint knowledge",o:"Aura that reacts to health"},
- {d:63,p:3,t:"BP: Pooling & Spawning",l:"Efficient VFX spawner systems",w:"VFX pooling patterns",o:"Reusable VFX spawner"},
- {d:64,p:3,t:"BP: Anim Sync",l:"Anim notifies → VFX sync with animations",w:"Anim Notify tutorials",o:"Cast VFX synced to animation frames"},
- {d:65,p:3,t:"🏆 BOSS: Playable VFX Demo",l:"Selectable spells, full cast/projectile/impact loops",w:"Everything you know",o:"Fully playable demo — your interactive portfolio",boss:true},
- // PHASE 4 (66-90)
- {d:66,p:4,t:"Pack Planning",l:"Market research on FAB, pick 10-15 effects",w:"Browse FAB VFX category",o:"Pack spec doc: Xianxia/Cultivation VFX Pack"},
- {d:67,p:4,t:"Pack Build: Auras",l:"3 aura variants, clean User Parameters",w:"Polish your library",o:"3 pack-ready auras"},
- {d:68,p:4,t:"Pack Build: Circles",l:"3 magic circle variants",w:"—",o:"3 pack-ready magic circles"},
- {d:69,p:4,t:"Pack Build: Projectiles",l:"4 elemental attacks, parameterized",w:"—",o:"4 pack-ready projectiles + impacts"},
- {d:70,p:4,t:"Pack Build: Breakthroughs",l:"2-3 power-up/transformation effects",w:"—",o:"Pack effects complete"},
- {d:71,p:4,t:"Optimization Pass",l:"Overdraw, LODs, scalability, GPU vs CPU",w:"Niagara optimization docs",o:"All effects perf-tested"},
- {d:72,p:4,t:"Demo Level",l:"Showcase map with all effects",w:"—",o:"Pack demo level"},
- {d:73,p:4,t:"Demo Video",l:"Record + edit pack trailer",w:"DaVinci Resolve",o:"60-90s pack trailer"},
- {d:74,p:4,t:"Documentation",l:"Usage docs, screenshots, store page copy",w:"Study top-selling pack pages",o:"Complete store listing draft"},
- {d:75,p:4,t:"🏆 SUBMIT TO FAB",l:"Publisher setup + submission",w:"FAB publisher docs",o:"First asset pack SUBMITTED 💰",boss:true},
- {d:76,p:4,t:"ArtStation Portfolio",l:"Upload Phase 2-3 reels, write descriptions",w:"Study pro VFX portfolios",o:"Live ArtStation portfolio"},
- {d:77,p:4,t:"Freelance Profiles",l:"Upwork/Fiverr gigs: 'UE5 anime ability VFX'",w:"Top-rated VFX gig research",o:"2+ freelance profiles live"},
- {d:78,p:4,t:"Community Presence",l:"RealtimeVFX intro post + Discord servers",w:"realtimevfx.com",o:"Active in 3+ communities"},
- {d:79,p:4,t:"Outreach",l:"Message 10 indie devs, offer VFX polish",w:"r/INAT, r/gameDevClassifieds",o:"10 outreach messages sent"},
- {d:80,p:4,t:"⚡ First Client Push",l:"Proposals, small test offers",w:"—",o:"Proposals submitted",boss:true},
- {d:81,p:4,t:"Channel Setup",l:"YouTube channel + X/Twitter posting rhythm",w:"Study CGHOW's format",o:"Channel live, first post up"},
- {d:82,p:4,t:"First Breakdown",l:"Record a VFX breakdown of your best effect",w:"—",o:"Breakdown video posted"},
- {d:83,p:4,t:"First Tutorial",l:"Teach one simple effect start-to-finish",w:"—",o:"Tutorial video posted"},
- {d:84,p:4,t:"Patreon Setup",l:"Project files as rewards (CGHOW model)",w:"—",o:"Patreon live"},
- {d:85,p:4,t:"⚡ Content Pipeline",l:"7-day content calendar",w:"—",o:"Sustainable posting schedule",boss:true},
- {d:86,p:4,t:"Game Prototype I",l:"Wave-based arena fighter core loop",w:"Your Blueprint skills",o:"Playable arena prototype"},
- {d:87,p:4,t:"Game Prototype II",l:"Wire in your combo system (Day 35)",w:"—",o:"Combat feels amazing"},
- {d:88,p:4,t:"Game Prototype III",l:"Enemies + your projectiles/impacts",w:"—",o:"Full combat loop with VFX"},
- {d:89,p:4,t:"Polish & Trailer",l:"Juice pass + capture gameplay trailer",w:"—",o:"30s gameplay trailer"},
- {d:90,p:4,t:"🐉 ASCENSION DAY",l:"Post everything. Reflect. Plan next 90 days.",w:"—",o:"Multiple income streams LIVE. You are a professional VFX artist. 💪",boss:true},
+  // PHASE 1 (1-14) — Foundation Forge
+  {d:1,p:1,t:"The Spark 🌟",l:"Niagara architecture: System → Emitter → Module → Parameters",w:"UNF Games 'Complete Intro to VFX Niagara' + Epic Quick Start docs",o:"Floating magic qi orb with exposed color/size User Parameters (3 color variants)"},
+  {d:2,p:1,t:"First Flame 🔥",l:"Sprite particles, SubUV flipbooks, Color/Size Over Life, additive blend",w:"CGHOW — Fire VFX Niagara UE5 · Gabriel Aguiar — Stylized Fire",o:"Stylized campfire with flickering flames + rising embers"},
+  {d:3,p:1,t:"Smokescreen 💨",l:"Curl Noise Force, Drag, Opacity Over Life, soft particle depth fade",w:"UNF Games smoke/steam tutorial · CGHOW — Smoke VFX",o:"Thick combat smoke that curls and fades + incense spirit vapor"},
+  {d:4,p:1,t:"The Explosion 💥",l:"Burst spawn, multi-emitter layering, system-level timing",w:"Gabriel Aguiar — Stylized Explosion UE5 · Download Niagara Examples Pack from Fab!",o:"4-layer explosion: core glow + fire + smoke + sparks + shockwave ring"},
+  {d:5,p:1,t:"The Trail ✨",l:"Ribbon Renderer, ribbon width/twist, attach to socket, color gradient",w:"CGHOW — Ribbon Trail Niagara · Epic docs Ribbon Renderer",o:"Glowing sword trail attached to UE5 mannequin's hand socket"},
+  {d:6,p:1,t:"Storm Caller ⚡",l:"Fresnel edge glow, lightning textures, sphere surface emission, high emissive",w:"CGHOW — Lightning Sphere Niagara UE5",o:"Energy sphere with arcing lightning on surface — pure donghua energy!"},
+  {d:7,p:1,t:"Weapon Enchant ⚔️",l:"Multi-emitter composition: hilt glow + blade ribbon + sparks + rune mesh particles",w:"UNF Games — Weapon Glow VFX from scratch",o:"Enchanted sword: hilt glow + blade aura + sparks + floating runes",boss:true},
+  {d:8,p:1,t:"Material Mastery I 🎨",l:"Dissolve/erosion nodes, emissive intensity, Depth Fade",w:"CGHOW — Dissolve Material UE5",o:"Dissolve material: talisman burning away or enemy dying"},
+  {d:9,p:1,t:"Material Mastery II 🎨",l:"Panner, UV Distortion + Noise, Dynamic Parameter from Niagara",w:"Gabriel Aguiar — VFX Material Basics",o:"Scrolling energy material — qi current flowing up arm"},
+  {d:10,p:1,t:"Material Mastery III 🎨",l:"Fresnel + noise combos, intersection glow, Particle Color node",w:"PrismaticaDev material deep dives",o:"Fresnel + noise barrier — cultivation shield / sect formation dome"},
+  {d:11,p:1,t:"Blender Blades 🔪",l:"Custom mesh export: pivot placement, orientation, scale, FBX flow",w:"Blender→UE5 mesh export tutorial (CGHOW/UNF)",o:"Custom crescent slash mesh exported from Blender with emissive material"},
+  {d:12,p:1,t:"Formation Circle 🔮",l:"Mesh renderer, rotation rate, texture rings, ring stacking",w:"CGHOW — Magic Circle Niagara UE5",o:"Spinning xianxia cultivation formation circle"},
+  {d:13,p:1,t:"Energy Beam 📡",l:"Beam emitters + ribbon core + mesh particle halo ring",w:"Gabriel Aguiar — Energy Beam Ribbon + Mesh Combo",o:"Chargeable heavenly energy beam attack"},
+  {d:14,p:1,t:"⚡ BOSS: Power-Up Sequence",l:"Composition — combining everything from Week 1-2",w:"Your own brain. No tutorial.",o:"Full cultivation power-up: circle underfoot + rising energy + lightning sphere + qi aura EXPLOSION",boss:true},
+
+  // PHASE 2 (15-45) — The Donghua Arsenal
+  {d:15,p:2,t:"Qi Aura I — Inner Glow",l:"Inner body Fresnel glow on character mesh material",w:"Gabriel Aguiar — Character Aura Effect UE5",o:"Body glow layer on character (layer 1 of 5)"},
+  {d:16,p:2,t:"Qi Aura II — Orbit Particles",l:"GPU particles orbiting character, curl noise + orbit velocity",w:"CGHOW — Energy Aura Niagara",o:"Swirling orbit particle layer + rising energy wisps"},
+  {d:17,p:2,t:"Qi Aura III — Ground Impact",l:"Ground crack decals + dust burst on Spawn Burst",w:"Epic — Decal + Niagara burst tutorials",o:"Ground crack + dust burst layer under aura"},
+  {d:18,p:2,t:"⚡ BOSS: Full Xianxia Aura",l:"Blueprint trigger + screen shake (your Blueprint advantage!)",w:"Combine days 15-17",o:"Complete power-up aura triggered by keypress via Blueprint",boss:true},
+  {d:19,p:2,t:"Fire Projectile 🔥",l:"Projectile core + trailing fire + heat distortion shell",w:"Gabriel Aguiar — Magic Projectile series",o:"Fire dragon ball with trailing flames"},
+  {d:20,p:2,t:"Ice Projectile ❄️",l:"Mesh particles + frost trail ribbon",w:"Same series, remix with cool palette",o:"Ice shard volley"},
+  {d:21,p:2,t:"Lightning Projectile ⚡",l:"Ribbon core + branching spark emitters",w:"Remix your Day 6 lightning",o:"Lightning bolt attack"},
+  {d:22,p:2,t:"⚡ BOSS: Water Whip + Master Material",l:"One parameter-rich master material: erosion/color/distortion/vertex offset",w:"Gnomon — Pawel Margacz (paid) or Gabriel Aguiar (free)",o:"4 elemental projectiles firing from character's hand via Blueprint",boss:true},
+  {d:23,p:2,t:"Wall Impact",l:"Radial cracks + debris + dust + flash",w:"RedefineFX — Chaos Destruction VFX in UE",o:"Projectile→wall impact effect"},
+  {d:24,p:2,t:"Ground Slam",l:"Shockwave ring + fracture + camera shake (Blueprint)",w:"Gabriel Aguiar — Impact/Hit Effect tutorials",o:"AOE ground slam with camera shake"},
+  {d:25,p:2,t:"Elemental Impacts I",l:"Fire impact (smoke + embers) + Ice impact (crystal shatter)",w:"Remix days 19-20",o:"2 matching elemental explosions"},
+  {d:26,p:2,t:"⚡ Elemental Impacts II",l:"Lightning strike (flash + char decal) + Water splash (droplets + ripple)",w:"Remix days 21-22",o:"All 4 projectiles have matching impacts — full combos!",boss:true},
+  {d:27,p:2,t:"Breakthrough Scene I",l:"Sequencer basics, Mixamo meditation retarget to UE mannequin",w:"Epic — Creating a CG Scene in UE5 with Sequencer",o:"Character posed in scene, camera blocked"},
+  {d:28,p:2,t:"Breakthrough Scene II",l:"Choreograph: circle spawn → energy spiral → lightning strike",w:"Epic Community — Ashif Ali Healing Beam FX",o:"Mid-sequence VFX timed in Sequencer"},
+  {d:29,p:2,t:"Breakthrough Scene III",l:"Aura explosion + new aura state, post-process volume tuning",w:"Epic — Movie Render Queue tutorial",o:"Full sequence assembled"},
+  {d:30,p:2,t:"🏆 BOSS: Cultivation Breakthrough Cinematic",l:"Render via Movie Render Queue + edit + music",w:"DaVinci Resolve",o:"30-second cinematic RENDERED → POST ON SOCIAL MEDIA 🚀",boss:true},
+  {d:31,p:2,t:"Combat Slash I",l:"Horizontal slash: crescent mesh + horizontal ribbon trail + sparks",w:"CGHOW — Slash VFX Niagara + UNF FFXIV-style Sword VFX",o:"Hit 1 of 3-hit combo"},
+  {d:32,p:2,t:"Combat Slash II",l:"Upward slash: vertical arc + rising sparks burst",w:"Gabriel Aguiar — Sword Slash Effect UE5",o:"Hit 2 of combo"},
+  {d:33,p:2,t:"Finisher",l:"Full-screen energy flash + massive shockwave + debris",w:"Remix your Day 4 explosion",o:"Hit 3 finishing move"},
+  {d:34,p:2,t:"Hit-Stop & Juice",l:"Blueprint hit-stop (time dilation), impact frames, timing polish",w:"Game feel / juice videos on YouTube",o:"Combo feels CRUNCHY"},
+  {d:35,p:2,t:"⚡ BOSS: 3-Hit Combo System",l:"Full Blueprint integration — press key → see combo",w:"Combine days 31-34",o:"Playable 3-hit combat combo with full VFX in-game",boss:true},
+  {d:36,p:2,t:"Mystic Waterfall",l:"Stylized water Niagara + splash + foam materials",w:"Gabriel Aguiar — Anime Waterfall Splash Tutorial UE5",o:"Anime waterfall with stylized splash"},
+  {d:37,p:2,t:"Spirit Particles",l:"Ambient fireflies / floating spirit motes on drifting arc paths",w:"CGHOW — Fireflies / Spirit Particles Niagara",o:"Drifting spirit particles / fireflies environment"},
+  {d:38,p:2,t:"Mist & Fog",l:"Volumetric-feel Niagara fog for atmosphere",w:"CGHOW — Fog/Mist Niagara",o:"Layered mountain mist"},
+  {d:39,p:2,t:"Spirit Tree",l:"Glowing leaf particles falling in arcs + pulsing runes",w:"Remix your library",o:"Spirit tree with falling glowing leaves"},
+  {d:40,p:2,t:"⚡ BOSS: Xianxia Environment",l:"Composition + lighting + Lumen atmosphere",w:"Combine days 36-39",o:"Full xianxia environment level — dripping with VFX atmosphere",boss:true},
+  {d:41,p:2,t:"Boss Fight: Blocking",l:"Storyboard the 60s fight, camera plan, shot list",w:"Reference: Battle Through the Heavens fights",o:"Shot list + blocked cameras in Sequencer"},
+  {d:42,p:2,t:"Boss Fight: Attacks",l:"Design a unique boss attack VFX (your original design!)",w:"Your VFX library + reference",o:"1 original boss attack effect"},
+  {d:43,p:2,t:"Boss Fight: The Clash",l:"Beam clash / colliding attacks → massive collision explosion",w:"Beam clash tutorials on CGHOW",o:"Clash centerpiece moment"},
+  {d:44,p:2,t:"Boss Fight: Assembly",l:"Sequencer assembly, sound placeholder, post-process",w:"Epic — Sequencer workflow",o:"Full fight assembled in engine"},
+  {d:45,p:2,t:"🏆 BOSS: 60-Second Fight Reel",l:"Movie Render Queue → DaVinci edit → grade → export",w:"DaVinci Resolve color grading",o:"PORTFOLIO-READY boss fight reel → POST EVERYWHERE",boss:true},
+
+  // PHASE 3 (46-65) — Advanced Techniques
+  {d:46,p:3,t:"Niagara Fluids I",l:"Fluids setup, 2D vs 3D templates, when to use each",w:"RedefineFX FREE Niagara Fluids Course (redefinefx.com/BLAST)",o:"First fluid sim running in engine"},
+  {d:47,p:3,t:"Fire Breath",l:"Volumetric fire, temperature/buoyancy, 2D fluid for perf",w:"RedefineFX fluids lessons 4-6",o:"Volumetric dragon fire breath"},
+  {d:48,p:3,t:"Ink FX 🖌️",l:"Fluid ink simulation — the ink-wash donghua signature!",w:"Fluid ink tutorials on YouTube",o:"Ink-wash style fluid cloud effect"},
+  {d:49,p:3,t:"Smoke Plumes",l:"Realistic volumetric smoke for cinematic storytelling",w:"RedefineFX",o:"Cinematic volumetric smoke plume"},
+  {d:50,p:3,t:"⚡ Bake It Down",l:"Niagara Baker → convert 3D sim to flipbook for game perf",w:"Niagara Baker official docs",o:"Baked flipbook from your fluid sim (game-ready!)",boss:true},
+  {d:51,p:3,t:"2D FX Drawing I",l:"Hand-drawn slash arcs in Krita (8-frame flipbook)",w:"VFX Apprentice free content + 2D FX refs",o:"Hand-drawn slash flipbook spritesheet"},
+  {d:52,p:3,t:"2D FX Drawing II",l:"Energy bursts + impact rings (6-frame flipbooks)",w:"Stylized Station 2D/3D hybrid technique",o:"2 more hand-painted flipbook sheets"},
+  {d:53,p:3,t:"2D FX Drawing III",l:"Smoke puffs, anime timing (snappy, not smooth!)",w:"Alan Becker — 12 Principles of Animation",o:"Smoke puff flipbook (donghua-style timing)"},
+  {d:54,p:3,t:"2D→3D Import",l:"Flipbooks into Niagara SubUV + dissolve maps",w:"Flipbook import workflow (CGHOW)",o:"Hand-drawn FX running in-engine"},
+  {d:55,p:3,t:"⚡ BOSS: Hybrid Donghua Slash",l:"2D hand-drawn flipbook + 3D particles combined",w:"Your synthesis",o:"INSTANT donghua-feel hybrid slash effect",boss:true},
+  {d:56,p:3,t:"Shader: Pan-Distort Master",l:"Main texture + noise + scalar params + all derivations",w:"Master material tutorials on PrismaticaDev",o:"Reusable pan-distort master material"},
+  {d:57,p:3,t:"Shader: Holographic",l:"Scanlines, edge flicker, Fresnel rim glow",w:"Holo shader tutorials",o:"Holographic spirit/talisman shader"},
+  {d:58,p:3,t:"Shader: Force Field",l:"Dome + intersection highlight with Depth Fade",w:"Force field UE5 tutorials",o:"Force field dome shader"},
+  {d:59,p:3,t:"Shader: Ink-Wash Dissolve",l:"Watercolor/ink dissolve — xianxia signature style",w:"Combine Day 48 + dissolve knowledge",o:"Ink-wash dissolve material"},
+  {d:60,p:3,t:"⚡ Shader Library Complete",l:"Organize, document, name everything — plus energy absorption swirl",w:"—",o:"10+ reusable VFX materials in a documented library",boss:true},
+  {d:61,p:3,t:"BP: Trigger Systems",l:"VFX on input, gameplay events, User Parameter binding",w:"Epic — Blueprint execution with Niagara",o:"Input-triggered spell system"},
+  {d:62,p:3,t:"BP: Reactive VFX",l:"Health-based aura changes, state-driven FX (Niagara User Params ← BP)",w:"Your Blueprint knowledge",o:"Aura that reacts to HP: color/intensity shifts"},
+  {d:63,p:3,t:"BP: Pooling & Spawning",l:"Efficient VFX spawner + surface-type impact system",w:"VFX pooling patterns",o:"Reusable VFX spawner + stone/wood/flesh impacts"},
+  {d:64,p:3,t:"BP: Anim Sync",l:"AnimNotify → VFX synced to animation frames",w:"Anim Notify tutorials",o:"Cast VFX synced to animation frames"},
+  {d:65,p:3,t:"🏆 BOSS: Playable VFX Demo",l:"4 selectable spells, full cast/projectile/impact loops",w:"Everything you know",o:"Fully playable demo — your interactive portfolio",boss:true},
+
+  // PHASE 4 (66-90) — Make Money
+  {d:66,p:4,t:"Pack Planning",l:"Market research on FAB, pick 12-15 effects for pack",w:"Browse FAB VFX category — find gaps",o:"Pack spec doc: 'Xianxia Cultivation VFX Pack Vol. 1'"},
+  {d:67,p:4,t:"Pack Build: Auras",l:"3 aura variants, clean User Parameters, labeled",w:"Polish your library",o:"3 pack-ready auras"},
+  {d:68,p:4,t:"Pack Build: Circles",l:"3 magic circle variants (rotation, scale, color params)",w:"—",o:"3 pack-ready magic formation circles"},
+  {d:69,p:4,t:"Pack Build: Projectiles",l:"4 elemental attacks, parameterized, Blueprint-triggerable",w:"—",o:"4 pack-ready projectiles + matching impacts"},
+  {d:70,p:4,t:"Pack Build: Breakthroughs",l:"2-3 power-up/transformation effects, portals",w:"—",o:"Pack effects complete"},
+  {d:71,p:4,t:"Optimization Pass",l:"Overdraw, LODs, Effect Types, GPU vs CPU choice",w:"Niagara optimization docs",o:"All effects perf-tested for shipping"},
+  {d:72,p:4,t:"Demo Level",l:"Showcase map with all effects arranged for demo capture",w:"—",o:"Pack demo level"},
+  {d:73,p:4,t:"Demo Video",l:"Record + edit 60-90 second pack trailer",w:"DaVinci Resolve",o:"60-90s pack trailer video"},
+  {d:74,p:4,t:"Documentation",l:"Usage docs, screenshots, FAB store page copy",w:"Study top-selling pack pages on Fab",o:"Complete FAB store listing draft"},
+  {d:75,p:4,t:"🏆 SUBMIT TO FAB",l:"FAB publisher account setup + submission for review",w:"FAB publisher docs",o:"First asset pack SUBMITTED 💰 — passive income product",boss:true},
+  {d:76,p:4,t:"ArtStation Portfolio",l:"Upload Phase 2-3 reels + breakdowns, write descriptions",w:"Study pro VFX portfolios",o:"Live ArtStation portfolio"},
+  {d:77,p:4,t:"Freelance Profiles",l:"Upwork/Fiverr gigs: 'UE5 Xianxia / Stylized VFX Artist'",w:"Top-rated VFX gig research",o:"2+ freelance profiles live"},
+  {d:78,p:4,t:"Community Presence",l:"RealtimeVFX intro post + Discord servers (CGHOW, Gabriel, RedefineFX)",w:"realtimevfx.com",o:"Active in 3+ communities"},
+  {d:79,p:4,t:"Outreach",l:"Message 10 indie devs, offer VFX polish services",w:"r/INAT, r/gameDevClassifieds, indie Discords",o:"10 outreach messages sent"},
+  {d:80,p:4,t:"⚡ First Client Push",l:"Proposals, small test offers, portfolio share",w:"—",o:"Proposals submitted",boss:true},
+  {d:81,p:4,t:"Channel Setup",l:"YouTube channel + X/Twitter posting rhythm (#VFXFriday)",w:"Study CGHOW's format",o:"Channel live, first post up"},
+  {d:82,p:4,t:"First Breakdown",l:"Record a VFX breakdown of your best effect",w:"—",o:"Breakdown video posted"},
+  {d:83,p:4,t:"First Tutorial",l:"Teach one simple effect start-to-finish",w:"—",o:"Tutorial video posted"},
+  {d:84,p:4,t:"Patreon Setup",l:"Project files as $5/month rewards (CGHOW model)",w:"—",o:"Patreon page live"},
+  {d:85,p:4,t:"⚡ Content Pipeline",l:"7-day sustainable content calendar",w:"—",o:"Sustainable posting schedule",boss:true},
+  {d:86,p:4,t:"Game Prototype I",l:"Wave-based arena fighter core loop (your Blueprint skills)",w:"—",o:"Playable arena prototype"},
+  {d:87,p:4,t:"Game Prototype II",l:"Wire in your combo system from Day 35",w:"—",o:"Combat feels amazing"},
+  {d:88,p:4,t:"Game Prototype III",l:"Enemies + your projectiles/impacts wired up",w:"—",o:"Full combat loop with VFX"},
+  {d:89,p:4,t:"Polish & Trailer",l:"Juice pass + capture gameplay trailer",w:"—",o:"30s gameplay trailer"},
+  {d:90,p:4,t:"🐉 ASCENSION DAY",l:"Post everything. Reflect. Plan next 90 days.",w:"—",o:"Multiple income streams LIVE. You are a professional VFX artist. 💪",boss:true},
 ];
 
-/* ================= RENDER ================= */
-const KEY="vfxWarriorProgress";
-let saved=JSON.parse(localStorage.getItem(KEY)||"{}");
+/* ================= STATE ================= */
+const KEY = "vfxWarrior_v2";
+let done = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
 
-function render(){
-  document.querySelectorAll(".phase-body").forEach(body=>{
-    const p=+body.dataset.days;
-    body.innerHTML=DAYS.filter(x=>x.p===p).map(x=>`
-      <div class="day ${x.boss?'boss':''} ${saved[x.d]?'done':''}" id="day-${x.d}">
-        <input type="checkbox" ${saved[x.d]?'checked':''} onchange="toggleDay(${x.d},this)">
-        <div class="day-content">
-          <div class="day-title"><span class="dnum">Day ${x.d}</span>${x.t}</div>
-          <div class="day-learn">📚 ${x.l}</div>
-          ${x.w&&x.w!=="—"?`<div class="day-watch">▶ Watch: ${x.w}</div>`:""}
-          <div class="day-output">🎁 Output: ${x.o}</div>
+/* ================= CULTIVATION REALMS ================= */
+const REALMS = [
+  [0,  "🧘 Mortal Realm"],
+  [7,  "🌱 Qi Condensation"],
+  [14, "⚡ Foundation Establishment"],
+  [30, "💫 Golden Core"],
+  [45, "🔮 Nascent Soul"],
+  [65, "🌌 Soul Formation"],
+  [75, "☯️ Ascension"],
+  [90, "🐉 Immortal"]
+];
+
+/* ================= RENDER DAY CARDS ================= */
+function renderDayCards() {
+  document.querySelectorAll('.days-grid[data-phase]').forEach(grid => {
+    const p = +grid.dataset.phase;
+    const days = DAYS.filter(x => x.p === p);
+    grid.innerHTML = days.map(x => `
+      <div class="day-card ${x.boss ? 'boss' : ''} ${done.has(x.d) ? 'completed' : ''}" data-day="${x.d}">
+        <div class="card-top">
+          <span class="day-number p${x.p}">DAY ${String(x.d).padStart(2,'0')}</span>
+          <div class="card-title-wrap">
+            <div class="card-title">${x.t}</div>
+          </div>
+          <button class="complete-toggle" onclick="toggleDay(${x.d}, event)" title="Mark complete">✓</button>
         </div>
-      </div>`).join("");
-  });
-  updateHUD();
-}
-
-function toggleDay(d,el){
-  if(el.checked) saved[d]=true; else delete saved[d];
-  localStorage.setItem(KEY,JSON.stringify(saved));
-  document.getElementById("day-"+d).classList.toggle("done",el.checked);
-  updateHUD();
-}
-
-const REALMS=[[0,"🧘 Mortal Realm"],[7,"🌱 Qi Condensation"],[14,"⚡ Foundation Establishment"],[30,"💫 Golden Core"],[45,"🔮 Nascent Soul"],[65,"🌌 Soul Formation"],[75,"☯️ Ascension"],[90,"🐉 Immortal"]];
-
-function updateHUD(){
-  const done=Object.keys(saved).length;
-  document.getElementById("doneCount").textContent=done;
-  document.getElementById("progressBar").style.width=(done/90*100)+"%";
-  let realm=REALMS[0][1];
-  for(const [n,r] of REALMS) if(done>=n) realm=r;
-  document.getElementById("realmLabel").textContent=realm;
-  // per-phase counters
-  [[1,14],[2,31],[3,20],[4,25]].forEach(([p,total])=>{
-    const c=DAYS.filter(x=>x.p===p&&saved[x.d]).length;
-    document.querySelector(`[data-prog="${p}"]`).textContent=`${c}/${total}`;
-  });
-  // milestones
-  document.querySelectorAll("#milestoneTable tr[data-day]").forEach(tr=>{
-    tr.classList.toggle("done-m",done>=+tr.dataset.day);
+        <div class="card-body">
+          <button class="detail-toggle" onclick="toggleDetail(this)"><span class="arrow">▼</span> SHOW DETAILS</button>
+          <div class="card-body-inner">
+            <div class="block">
+              <div class="block-label">🧠 Learn</div>
+              <div class="concept-line">${x.l}</div>
+            </div>
+            ${x.w && x.w !== "—" ? `
+            <div class="block">
+              <div class="block-label">📺 Watch</div>
+              <div class="watch-line">▶ ${x.w}</div>
+            </div>` : ''}
+            <div class="block">
+              <div class="block-label">🎁 End-of-Day Output</div>
+              <div class="output-badge">${x.o}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
   });
 }
 
-function togglePhase(head){head.parentElement.classList.toggle("open")}
-function resetAll(){
-  if(confirm("Reset ALL progress? Your cultivation will return to Mortal Realm!")){
-    saved={};localStorage.removeItem(KEY);render();
+/* ================= TRACKER GRID ================= */
+function renderTracker() {
+  const grid = document.getElementById('tracker-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 90; i++) {
+    const el = document.createElement('div');
+    el.className = 'day-dot' + (done.has(i) ? ' done' : '');
+    el.title = 'Day ' + i;
+    if (!done.has(i)) el.textContent = i;
+    el.onclick = () => toggleDay(i);
+    grid.appendChild(el);
   }
 }
-render();
+
+/* ================= TOGGLE + STATE ================= */
+function toggleDay(d, e) {
+  if (e) e.stopPropagation();
+  if (done.has(d)) done.delete(d); else done.add(d);
+  localStorage.setItem(KEY, JSON.stringify([...done]));
+  updateUI();
+}
+
+function toggleDetail(btn) {
+  const card = btn.closest('.day-card');
+  card.classList.toggle('open');
+  btn.innerHTML = card.classList.contains('open')
+    ? '<span class="arrow">▲</span> HIDE DETAILS'
+    : '<span class="arrow">▼</span> SHOW DETAILS';
+}
+
+function resetAll() {
+  if (!confirm("Reset ALL progress? Your cultivation returns to Mortal Realm!")) return;
+  done.clear();
+  localStorage.removeItem(KEY);
+  updateUI();
+}
+
+/* ================= UPDATE UI ================= */
+function updateUI() {
+  const total = done.size;
+  const pct = Math.round((total / 90) * 100);
+
+  // HUD
+  document.getElementById('doneCount').textContent = total;
+  document.getElementById('hudBar').style.width = pct + '%';
+  document.getElementById('totalDone').textContent = total;
+
+  // Realm
+  let realm = REALMS[0][1];
+  for (const [n, r] of REALMS) if (total >= n) realm = r;
+  document.getElementById('realmLabel').textContent = realm;
+
+  // Streak (consecutive completed days from Day 1 up)
+  let streak = 0;
+  for (let i = 1; i <= 90; i++) {
+    if (done.has(i)) streak++; else break;
+  }
+  document.getElementById('streakNum').textContent = streak;
+  document.getElementById('streakBadge').textContent = streak;
+
+  // Per-phase counters
+  const phaseTotals = { 1: 14, 2: 31, 3: 20, 4: 25 };
+  document.querySelectorAll('[data-phase-counter]').forEach(el => {
+    const p = +el.dataset.phaseCounter;
+    const c = DAYS.filter(x => x.p === p && done.has(x.d)).length;
+    el.textContent = `${c} / ${phaseTotals[p]}`;
+  });
+
+  // Milestones
+  document.querySelectorAll('#milestoneTable tr[data-milestone]').forEach(tr => {
+    tr.classList.toggle('reached', total >= +tr.dataset.milestone);
+  });
+
+  // Sync day cards & dots (only DOM class changes)
+  document.querySelectorAll('.day-card[data-day]').forEach(card => {
+    const d = +card.dataset.day;
+    card.classList.toggle('completed', done.has(d));
+  });
+  document.querySelectorAll('#tracker-grid .day-dot').forEach((dot, idx) => {
+    const d = idx + 1;
+    dot.classList.toggle('done', done.has(d));
+    dot.textContent = done.has(d) ? '' : d;
+  });
+}
+
+/* ================= ANIMATED BACKGROUND ================= */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+const colors = ['rgba(245,197,24,', 'rgba(0,255,179,', 'rgba(255,60,92,', 'rgba(168,85,247,', 'rgba(56,189,248,'];
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * 1920, y: Math.random() * 1080,
+    r: Math.random() * 1.5 + 0.3,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: -Math.random() * 0.5 - 0.1,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    alpha: Math.random() * 0.4 + 0.05,
+    life: Math.random(),
+    lifeSpeed: Math.random() * 0.003 + 0.001
+  });
+}
+function animateBg() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.life += p.lifeSpeed;
+    if (p.life > 1) { p.life = 0; p.x = Math.random() * W; p.y = H + 10; }
+    const a = Math.sin(p.life * Math.PI) * p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x % W, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color + a + ')';
+    ctx.fill();
+  });
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+/* ================= SCROLL TO TOP ================= */
+const scrollBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+
+/* ================= NAV ACTIVE STATE ================= */
+const navLinks = document.querySelectorAll('.phase-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('[id]').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 140) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}, { passive: true });
+
+/* ================= INIT ================= */
+renderDayCards();
+renderTracker();
+updateUI();
 </script>
 </body>
 </html>
